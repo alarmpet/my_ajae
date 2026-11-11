@@ -3,7 +3,7 @@
 ## 이름
 - 아이디: `my_ajae` (X 만 `my_ajae_`)
 - 표시 이름: **「아재도 한다」**(사용자 결정 2026-11-12). 아이디 유지 근거는 `docs/research/agent-rounds/2026-11-12-handle/`
-- 프로필 사진: `brand/avatar/my_ajae-avatar.png`(글자 그림 — 남색 바탕 · 「아재도」 흰색 · 「한다」 노랑 · `</>`. 사람 얼굴 · 생성 이미지 없음)
+- 프로필 사진: `brand/avatar/my_ajae-avatar-v2.jpg`(사용자가 준 그림, 2026-11-12 인스타 · 스레드 적용). 첫 판 글자 그림 `my_ajae-avatar.png` 은 예비
 
 ## 소개 (인스타 게시 중 · 2026-11-12 · 사용자 문안)
 > 당신은 상상만 하세요!
