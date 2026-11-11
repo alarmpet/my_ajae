@@ -22,10 +22,11 @@
 - [x] 인스타 `my_ajae` 가입(사용자, 2026-11-12). 폰 인스타의 다른 계정 6개는 계정 센터에서 빼고 로그아웃(삭제 아님). 가입 안내: 연락처 동기화 끔 · Facebook 자동 공유 「나중에」
 - [x] 아이디 유지 결정 — 세 모델 라운드 넷 모두 KEEP `my_ajae`(`docs/research/agent-rounds/2026-11-12-handle/`). 「Made in 아재」는 서명 · 연재 이름 후보
 - [x] 인스타 프로페셔널 전환 — 크리에이터 · 카테고리 「디지털 크리에이터」 · 홍보 이메일 끔(2026-11-12)
-- [ ] **계정 가입 나머지**(사용자): 스레드 `my_ajae` 프로필 만들기(스레드 앱 → 계정 전환 → 다른 계정 추가 → Instagram 의 my_ajae) → 유튜브 · 틱톡 같은 아이디
+- [x] 스레드 `my_ajae` 프로필 — 가입 버튼만 사용자, 공개 프로필 · 이름 · 사진은 인스타에서 · 소개 두 줄 입력 · 화면 대조(2026-11-12). 폰의 스레드 앱은 지금 my_ajae 가 현재 계정(petblossom 도 남아 있음)
+- [ ] **계정 가입 나머지**(사용자): 유튜브 · 틱톡 같은 아이디
 - [x] 인스타 프로필: 이름 「아재도 한다」 · 소개(`brand/brand.md`) · 사진(`brand/avatar/`) 넣고 화면 대조(2026-11-12)
 - [ ] 고정 글(초안 `brand/brand.md`) — 첫 게시물 뒤
-- 폰에 한글 넣는 법(adb `input text` 는 한글 불가): Google 번역 앱에 `am start -f 0x10008000 -a android.intent.action.SEND -t text/plain -p com.google.android.apps.translate --es android.intent.extra.TEXT '<글>'` → 입력칸(540,670) 누르기 → `input keycombination KEYCODE_CTRL_LEFT KEYCODE_A` · `…_C` → 인스타 칸에서 `…_V`. 폰은 Z 플립5, 화면 캡처는 `screencap -d 4630946592180194435`
+- 폰에 한글 넣는 법(adb `input text` 는 한글 불가): Google 번역 앱에 `am start -f 0x10008000 -a android.intent.action.SEND -t text/plain -p com.google.android.apps.translate --es android.intent.extra.TEXT '<글>'` → 입력칸(540,670) 누르기 → `input keycombination KEYCODE_CTRL_LEFT KEYCODE_A` · `…_C` → 인스타 칸에서 `…_V`. 줄바꿈은 `'첫 줄<실제 줄바꿈>둘째 줄'` 로 한 번에 보내면 그대로 들어간다. 폰은 Z 플립5, 화면 캡처는 `screencap -d 4630946592180194435`
 - [ ] 링크 모음 페이지 + `/go/{앱}/{경로}` 이동 클릭 집계(Cloudflare 무료 한도 먼저 확인)
 - [ ] 카드 템플릿 4종(HTML → PNG/JPEG) — 사고 · 비포/애프터 · 낱말 풀이 · 숫자
 - [ ] 메타 개발자 앱 · Threads 테스터 수락 · 권한 창(사용자 클릭) → 첫 API 게시
