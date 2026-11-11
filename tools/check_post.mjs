@@ -25,6 +25,19 @@ export const BANNED = [
   [/(국내|업계|한국)\s*1위|최초|유일한/, '근거 없는 비교(1위 · 최초 · 유일)'],
   [/어린이\s*(전용|용\s*게임)|아이들\s*전용/, '보카라이더는 전 연령 · 아동 전용 아님'],
   [/사람\s*시험\s*(완료|마쳤|끝냈)/, '와일드 크라운은 사람 시험 전'],
+  [/(하루|한\s*시간|몇\s*(분|시간))\s*만에\s*(앱|게임|서비스)|(지시|프롬프트|말)\s*한\s*(줄|마디)(이면|로|만으로)\s*(앱|게임|뚝딱)/, '만능론(「지시 한 줄이면 앱」 · 「하루 만에 앱」) — docs/plan.md §3 · brand/brand.md 말투'],
+];
+
+/**
+ * 보류(경고) 표현 — 실패는 아니지만 사람이 한 번 본다.
+ * 출처: ECC(affaan-m/ECC, MIT) skills/crosspost · skills/brand-voice 의 금지 목록을 한국어 글에 맞게 옮김.
+ * 검토 기록: docs/reference/2026-11-12-ecc-review.md
+ */
+export const HOLD = [
+  [/(여러분|다들)[^.!?\n]{0,20}(어떠세요|어떻게\s*생각하세요|어떠신가요)\s*\?/, '미끼 질문 — 글이 얻지 않은 질문으로 끝내지 않는다(ECC crosspost)'],
+  [/(공유하게\s*되어|소개하게\s*되어)\s*(기쁩|설렙|영광)/, '판에 박힌 발표 문구(ECC 「Excited to share」)'],
+  [/오늘\s*(배운|깨달은)\s*(점|것)은/, '교훈 문단 틀 — 사건이 교훈을 말하게 둔다(ECC 「Here\'s what I learned」)'],
+  [/꿀팁|대박|미쳤다|역대급/, '과장 · 억지 밈 — brand/brand.md 말투'],
 ];
 
 const URL_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|io|app|dev|kr|co)\b/i;
@@ -68,6 +81,7 @@ export function checkPost(post, ledger) {
   }
   const known = new Set(entries.flatMap((e) => numbersIn((e.facts ?? []).join(' ') + ' ' + (e.title ?? ''))));
   for (const n of new Set(numbersIn(body))) if (!known.has(n)) fail.push(`장부 근거에 없는 숫자: ${n}`);
+  for (const [re, why] of HOLD) if (re.test(body)) hold.push(`보류 표현: ${why}`);
   if ([...String(post.text ?? '')].length > 500) hold.push('본문 500자 초과 — 스레드 글자 한도(미대조)');
   return { fail, hold };
 }

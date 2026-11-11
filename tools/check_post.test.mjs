@@ -58,3 +58,19 @@ test('장부의 모든 항목은 근거 경로와 사실을 가진다', () => {
     assert.ok(['yonghane', 'vocarider', 'wildcrown', 'maker'].includes(e.app), `${e.id} 앱`);
   }
 });
+
+test('만능론은 실패한다 — 「지시 한 줄이면 앱」 · 「하루 만에 앱」', () => {
+  for (const t of ['지시 한 줄이면 앱이 나옵니다', '하루 만에 앱을 만들었어요', '프롬프트 한 줄로 게임 뚝딱']) {
+    assert.ok(checkPost({ ...ok, text: t }, ledger).fail.some((f) => f.includes('만능론')), t);
+  }
+  assert.deepEqual(checkPost({ ...ok, text: '지시에 예외 하나를 적었습니다' }, ledger).fail, []);
+});
+
+test('판에 박힌 문구 · 미끼 질문은 실패가 아니라 보류다(ECC 에서 옮김)', () => {
+  for (const t of ['여러분은 어떠세요?', '공유하게 되어 기쁩니다', '오늘 배운 점은 이것입니다', '꿀팁 하나']) {
+    const r = checkPost({ ...ok, text: t }, ledger);
+    assert.deepEqual(r.fail, [], t);
+    assert.ok(r.hold.some((h) => h.startsWith('보류 표현')), t);
+  }
+  assert.deepEqual(checkPost(ok, ledger).hold, []);
+});
