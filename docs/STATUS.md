@@ -39,6 +39,7 @@
 - [x] 마케팅 스킬 6개(coreyhaines31/marketingskills, MIT) 프로젝트 범위로 도입 · `.agents/product-marketing.md` v1(장부 근거만) — `.claude/skills/README-marketingskills.md` (2026-11-12)
 - [x] **첫 주 묶음 승인(사용자 2026-11-12)** — 글 10(P0001~P0010) · 카드 · 캐러셀 6 · 영상 3. 전체 sha256 은 `posts/2026-W46/APPROVED.json`. 카드 · 영상은 `out/`(git 밖)에 있다 → **다시 렌더하면 지문이 바뀌어 게시 불가**, 건드리지 않는다
 - [x] **쉬운 말 윤문판 재승인(사용자 2026-11-12)** — 윤문(66770d5) 뒤 지문 새로 기록, 10개 verify 일치. 다음: 첫 게시 시점 결정(P0008 76만 릴스 후보) → `python tools/threads_api.py publish P0008 --yes`
+- [x] **첫 게시(2026-11-12 21:50 KST)** — P0008 76만 릴스, 스레드 VIDEO https://www.threads.com/@my_ajae/post/DfpGDFIgm1s (기록 `posts/published.jsonl`). 다음 글은 P0001~ 요일 순
 - 메타 개발자 확인(2026-11-12, ego-browser): 앱 1개 `petblossom-feed`(앱 ID 1755767215717996 · **개발 중** · 게시되지 않음). 이용 사례 「Threads API 액세스」 · 「Instagram 메시지 및 콘텐츠 관리」 이미 있음. 테스터: Instagram = petblossom 만 · Threads = 없음 → 2026-11-12 my_ajae 를 Threads 테스터 · Instagram 테스터로 **초대함(둘 다 「대기 중」)** → **사용자 수락 필요**(Threads 앱: 설정 → 계정 → 웹사이트 권한 → 초대 / 인스타 웹: 설정 → 앱 및 웹사이트 → 테스터 초대). 수락 뒤 로그인 권한 창 → 토큰은 `.env`
 - [x] Threads 토큰 발급(2026-11-12) — @my_ajae(id 29022096787484068) 확인, 자격 증명 관리자 `my_ajae/threads-token`, 갱신 기한 `config/threads.json`. 사진/영상: auto-cf R2 공개 버킷 `my_ajae/` 에 잠깐 올리고 게시 뒤 삭제(사용자 결정 2026-11-12, r2-test 통과). 인스타 토큰은 아직
 - [ ] **게시 방법 정하기**: 메타 개발자 앱 · Threads/인스타 API 권한(사용자 클릭) 전이라 예약 게시 불가. 그 전에는 사용자가 앱에서 직접 올리고 에이전트는 올릴 글 · 파일을 날짜별로 준비
