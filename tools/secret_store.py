@@ -2,6 +2,7 @@
 D:/auto-cf/tools/secret_store.py 와 같은 방식(이름 앞머리만 my_ajae/).
 
     python tools/secret_store.py put-stdin <이름> [--min-len 40]   # 표준 입력의 값을 저장(출력하지 않는다)
+    python tools/secret_store.py put-clipboard <이름>              # 클립보드 값을 저장하고 클립보드를 비운다
     python tools/secret_store.py check <이름>                     # 있는지 · 길이만
 
 코드에서: from secret_store import get; tok = get("threads-token")
@@ -61,6 +62,16 @@ def main():
             raise SystemExit(f"값이 토큰처럼 보이지 않는다(길이 {len(v)}) — 저장하지 않음")
         put(name, v)
         print(f"저장: {PREFIX}{name} (길이 {len(v)})")
+    elif cmd == "put-clipboard":
+        import subprocess
+        min_len = int(sys.argv[sys.argv.index("--min-len") + 1]) if "--min-len" in sys.argv else 40
+        v = subprocess.run(["powershell", "-NoProfile", "-Command", "Get-Clipboard -Raw"], capture_output=True,
+                           text=True, encoding="utf-8").stdout.strip()
+        if not v or any(ch.isspace() for ch in v) or len(v) < min_len:
+            raise SystemExit(f"클립보드 값이 토큰처럼 보이지 않는다(길이 {len(v)}) — 저장하지 않음")
+        put(name, v)
+        subprocess.run(["powershell", "-NoProfile", "-Command", "Set-Clipboard -Value ' '"], capture_output=True)
+        print(f"저장: {PREFIX}{name} (길이 {len(v)}), 클립보드 비움")
     elif cmd == "check":
         v = get(name)
         print(f"{PREFIX}{name}: " + (f"있음 (길이 {len(v)})" if v else "없음"))
