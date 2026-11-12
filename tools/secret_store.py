@@ -43,9 +43,10 @@ def put(name, value):
         raise OSError(ctypes.get_last_error(), "CredWriteW 실패")
 
 
-def get(name):
+def get(name, prefix=PREFIX):
+    """prefix 를 바꾸면 다른 저장소의 항목을 읽는다(예: auto-cf/r2-* — 사용자 결정 2026-11-12, R2 버킷 같이 쓰기)."""
     p = ctypes.POINTER(CREDENTIAL)()
-    if not adv.CredReadW(PREFIX + name, CRED_TYPE_GENERIC, 0, ctypes.byref(p)):
+    if not adv.CredReadW(prefix + name, CRED_TYPE_GENERIC, 0, ctypes.byref(p)):
         return None
     try:
         return ctypes.string_at(p.contents.CredentialBlob, p.contents.CredentialBlobSize).decode("utf-8")
