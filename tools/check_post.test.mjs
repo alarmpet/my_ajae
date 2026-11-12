@@ -66,13 +66,12 @@ test('만능론은 실패한다 — 「지시 한 줄이면 앱」 · 「하루 
   assert.deepEqual(checkPost({ ...ok, text: '지시에 예외 하나를 적었습니다' }, ledger).fail, []);
 });
 
-test('판에 박힌 문구 · 미끼 질문은 실패가 아니라 보류다(ECC 에서 옮김)', () => {
-  for (const t of ['여러분은 어떠세요?', '공유하게 되어 기쁩니다', '오늘 배운 점은 이것입니다', '꿀팁 하나']) {
+test('말투 · 과장 · 댓글 유도는 막지도 보류하지도 않는다(2026-11-13 사용자 지시)', () => {
+  for (const t of ['여러분은 어떠세요?', '공유하게 되어 기쁩니다', '오늘 배운 점은 이것입니다', '꿀팁 하나', '이거 진짜 미쳤다', 'AI 하나한테만 맡기면 망합니다']) {
     const r = checkPost({ ...ok, text: t }, ledger);
     assert.deepEqual(r.fail, [], t);
-    assert.ok(r.hold.some((h) => h.startsWith('보류 표현')), t);
+    assert.deepEqual(r.hold, [], t);
   }
-  assert.deepEqual(checkPost(ok, ledger).hold, []);
 });
 
 test('「3D · 2D」의 숫자는 세지 않는다 — 다른 숫자는 그대로 센다', () => {

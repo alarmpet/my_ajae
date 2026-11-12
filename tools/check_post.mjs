@@ -33,12 +33,9 @@ export const BANNED = [
  * 출처: ECC(affaan-m/ECC, MIT) skills/crosspost · skills/brand-voice 의 금지 목록을 한국어 글에 맞게 옮김.
  * 검토 기록: docs/reference/2026-11-12-ecc-review.md
  */
-export const HOLD = [
-  [/(여러분|다들)[^.!?\n]{0,20}(어떠세요|어떻게\s*생각하세요|어떠신가요)\s*\?/, '미끼 질문 — 글이 얻지 않은 질문으로 끝내지 않는다(ECC crosspost)'],
-  [/(공유하게\s*되어|소개하게\s*되어)\s*(기쁩|설렙|영광)/, '판에 박힌 발표 문구(ECC 「Excited to share」)'],
-  [/오늘\s*(배운|깨달은)\s*(점|것)은/, '교훈 문단 틀 — 사건이 교훈을 말하게 둔다(ECC 「Here\'s what I learned」)'],
-  [/꿀팁|대박|미쳤다|역대급/, '과장 · 억지 밈 — brand/brand.md 말투'],
-];
+// 말투 · 과장 · 댓글 유도는 막지도 경고하지도 않는다 — 사용자 지시 2026-11-13 「제발 빡빡하게 하지마, 재미없으면 아무도 안 본다」.
+// (예전 보류 목록: 미끼 질문 · 판에 박힌 발표 문구 · 교훈 틀 · 「꿀팁 · 대박」 — ECC 에서 옮겼던 것, 걷음)
+export const HOLD = [];
 
 const URL_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|io|app|dev|kr|co)\b/i;
 
