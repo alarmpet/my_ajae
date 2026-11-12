@@ -39,6 +39,7 @@
 - [x] 마케팅 스킬 6개(coreyhaines31/marketingskills, MIT) 프로젝트 범위로 도입 · `.agents/product-marketing.md` v1(장부 근거만) — `.claude/skills/README-marketingskills.md` (2026-11-12)
 - [x] **첫 주 묶음 승인(사용자 2026-11-12)** — 글 10(P0001~P0010) · 카드 · 캐러셀 6 · 영상 3. 전체 sha256 은 `posts/2026-W46/APPROVED.json`. 카드 · 영상은 `out/`(git 밖)에 있다 → **다시 렌더하면 지문이 바뀌어 게시 불가**, 건드리지 않는다
 - 메타 개발자 확인(2026-11-12, ego-browser): 앱 1개 `petblossom-feed`(앱 ID 1755767215717996 · **개발 중** · 게시되지 않음). 이용 사례 「Threads API 액세스」 · 「Instagram 메시지 및 콘텐츠 관리」 이미 있음. 테스터: Instagram = petblossom 만 · Threads = 없음 → 2026-11-12 my_ajae 를 Threads 테스터 · Instagram 테스터로 **초대함(둘 다 「대기 중」)** → **사용자 수락 필요**(Threads 앱: 설정 → 계정 → 웹사이트 권한 → 초대 / 인스타 웹: 설정 → 앱 및 웹사이트 → 테스터 초대). 수락 뒤 로그인 권한 창 → 토큰은 `.env`
+- [x] Threads 토큰 발급(2026-11-12) — @my_ajae(id 29022096787484068) 확인, 자격 증명 관리자 `my_ajae/threads-token`, 갱신 기한 `config/threads.json`. 인스타 토큰 · 사진/영상용 공개 주소(R2)는 아직
 - [ ] **게시 방법 정하기**: 메타 개발자 앱 · Threads/인스타 API 권한(사용자 클릭) 전이라 예약 게시 불가. 그 전에는 사용자가 앱에서 직접 올리고 에이전트는 올릴 글 · 파일을 날짜별로 준비
 - [ ] 와일드 크라운 재배포(별도 세션 — 랭크 DB 방식 사용자 결정 대기) → 장부 · 영상
 

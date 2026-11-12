@@ -1,0 +1,9 @@
+{
+ "username": "my_ajae",
+ "user_id": "29022096787484068",
+ "app": "petblossom-feed (1755767215717996, 개발 중 · Threads 테스터)",
+ "secret": "Windows 자격 증명 관리자 my_ajae/threads-token (값은 저장소에 없음)",
+ "token_issued": "2026-11-12",
+ "refresh_before": "2027-01-01",
+ "_note": "사용자 토큰 생성기 장기 토큰(60일). 발급 24시간 뒤~만료 전에 GET graph.threads.net/refresh_access_token?grant_type=th_refresh_token 로 갱신(D:/auto-cf/tools/threads_api.py refresh 와 같은 방식)."
+}
