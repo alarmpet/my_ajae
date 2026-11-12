@@ -113,7 +113,7 @@ def main():
     # 6 마무리
     im, d = base(6)
     y = block(d, 160, '⑤ 사이 10초는 Google Flow', 64, ORANGE)
-    y = block(d, y + 30, '두 그림 사이를 프레임 모드로 채운다', 48, WHITE)
+    y = block(d, y + 30, '영상 도구가 두 그림 사이를 채운다', 48, WHITE)
     y = block(d, y + 60, '제목은 사람이 정하고', 56, WHITE)
     y = block(d, y, 'AI 표시는 켜고 올린다', 56, YELLOW)
     y = block(d, y + 80, '우리 집 강아지가 내가 없을 때도 이렇게 즐거웠으면 하는 마음으로 만들었다.', 44, GRAY)

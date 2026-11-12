@@ -25,6 +25,17 @@ APP_NAME = {'yonghane': '용하네', 'vocarider': '보카라이더', 'wildcrown'
 
 
 def wrap(draw, text, font, max_w):
+    # 두 줄이면 충분할 때: 두 줄 폭이 가장 고르게 되는 띄어쓰기에서 나눈다(「세 / 번」 같은 어색한 끊김 방지)
+    if draw.textlength(text, font=font) > max_w:
+        cands = [i for i, ch in enumerate(text) if ch == ' ']
+        best = None
+        for i in cands:
+            a, b = text[:i], text[i + 1:]
+            wa, wb = draw.textlength(a, font=font), draw.textlength(b, font=font)
+            if wa <= max_w and wb <= max_w and (best is None or max(wa, wb) < best[0]):
+                best = (max(wa, wb), [a, b])
+        if best:
+            return best[1]
     lines, cur = [], ''
     for ch in text:
         if draw.textlength(cur + ch, font=font) > max_w and cur:
