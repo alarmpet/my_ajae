@@ -79,3 +79,9 @@ test('「3D · 2D」의 숫자는 세지 않는다 — 다른 숫자는 그대�
   assert.deepEqual(numbersIn('3D 수식은 직접 못 합니다 · 2D 카드'), []);
   assert.deepEqual(numbersIn('5° 기울였고 3D 화면'), ['5']);
 });
+
+test('플랫폼별 글(variants)도 검사한다 — 인스타 글에만 넣은 장부 밖 숫자도 실패', () => {
+  const r = checkPost({ ...ok, variants: { instagram: '근거 줄 1,688개 중 99% 에 전문 용어' } }, ledger);
+  assert.ok(r.fail.some((f) => f.includes('99')));
+  assert.deepEqual(checkPost({ ...ok, variants: { x: '근거 줄 1,688개, 86% 에 전문 용어' } }, ledger).fail, []);
+});

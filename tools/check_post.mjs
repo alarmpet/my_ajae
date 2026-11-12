@@ -64,7 +64,9 @@ export function loadLedger(file = path.join(ROOT, 'ledger', 'events.jsonl')) {
 export function checkPost(post, ledger) {
   const fail = [];
   const hold = [];
-  const body = [post.text ?? '', post.card ?? ''].join('\n');
+  // 플랫폼별 글(variants: { instagram, x, … })도 같은 규칙으로 검사한다
+  const variants = post.variants && typeof post.variants === 'object' ? Object.values(post.variants) : [];
+  const body = [post.text ?? '', post.card ?? '', ...variants].join('\n');
   if (!post.text || !String(post.text).trim()) fail.push('본문이 비었다');
   for (const [re, why] of BANNED) if (re.test(body)) fail.push(`금지 표현: ${why}`);
   if (URL_RE.test(body)) fail.push('본문에 주소가 있다 — 주소는 프로필 링크 하나에만');
