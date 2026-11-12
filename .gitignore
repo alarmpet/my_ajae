@@ -6,3 +6,4 @@ out/
 renders/
 *.log
 .reports/
+logs/
