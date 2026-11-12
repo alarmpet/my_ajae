@@ -74,3 +74,8 @@ test('판에 박힌 문구 · 미끼 질문은 실패가 아니라 보류다(ECC
   }
   assert.deepEqual(checkPost(ok, ledger).hold, []);
 });
+
+test('「3D · 2D」의 숫자는 세지 않는다 — 다른 숫자는 그대로 센다', () => {
+  assert.deepEqual(numbersIn('3D 수식은 직접 못 합니다 · 2D 카드'), []);
+  assert.deepEqual(numbersIn('5° 기울였고 3D 화면'), ['5']);
+});
