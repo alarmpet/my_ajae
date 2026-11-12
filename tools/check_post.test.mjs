@@ -85,3 +85,9 @@ test('플랫폼별 글(variants)도 검사한다 — 인스타 글에만 넣은 
   assert.ok(r.fail.some((f) => f.includes('99')));
   assert.deepEqual(checkPost({ ...ok, variants: { x: '근거 줄 1,688개, 86% 에 전문 용어' } }, ledger).fail, []);
 });
+
+test('목록 번호(줄 첫머리 1. 2) )는 숫자로 세지 않는다 — 본문 속 숫자는 센다', () => {
+  assert.deepEqual(numbersIn('1. 컷은 2.5초 이하\n2) 첫 2초\n  3. 끝'), ['2.5', '2']);
+  assert.deepEqual(numbersIn('10. 열 번째'), []);
+  assert.deepEqual(numbersIn('값 1. 끝'), ['1']);
+});

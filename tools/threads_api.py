@@ -5,8 +5,9 @@ D:/auto-cf/tools/threads_api.py(@petblossom)와 같은 방식. 토큰은 자격 
     python tools/threads_api.py verify P0008            # APPROVED.json 지문과 파일 대조(게시 안 함)
     python tools/threads_api.py r2-test                 # 공개 버킷에 시험 파일 올리고 · 열어 보고 · 지운다(게시 안 함)
     python tools/threads_api.py publish P0008 --yes     # 승인 지문 · 계정 · 글자 수가 맞을 때만 게시
+    python tools/threads_api.py comment L0001 --yes     # 게시물의 first_comment 를 본글의 첫 답글로(우리 계정)
 
-게시물의 미디어(게시물 JSON 기준): video 가 있으면 영상, carousel 이면 캐러셀, 아니면 카드 한 장(out/cards/W46/<id>.jpg).
+게시물의 미디어(게시물 JSON 기준): video 가 있으면 영상, carousel 이면 캐러셀, image 면 그 그림 한 장, 아니면 카드 한 장(out/cards/W46/<id>.jpg). 게시물은 posts/*/<id>.json 어디든(승인 기록은 같은 폴더).
 미디어는 auto-cf 의 R2 공개 버킷(petblossom-feed) `my_ajae/` 아래에 잠깐 올리고, 게시를 확인하면 지운다(사용자 결정 2026-11-12).
 게시 기록은 posts/published.jsonl 에 한 줄씩 남긴다.
 """
@@ -29,7 +30,6 @@ API = "https://graph.threads.net/v1.0"
 SECRET = "threads-token"
 EXPECT_USER = "my_ajae"
 MAX_TEXT = 500
-APPROVED = ROOT / "posts/2026-W46/APPROVED.json"
 LOG = ROOT / "posts/published.jsonl"
 R2 = json.loads(Path("D:/auto-cf/config/ig_api.json").read_text(encoding="utf-8"))["r2"]
 
@@ -58,9 +58,18 @@ def whoami():
 
 
 # ---- 승인 지문 ----
+def post_dir(pid):
+    """게시물 파일이 있는 폴더(posts/<묶음>/<pid>.json). 승인 기록은 같은 폴더의 APPROVED.json."""
+    hits = sorted((ROOT / "posts").glob(f"*/{pid}.json"))
+    if len(hits) != 1:
+        raise SystemExit(f"{pid} 게시물 파일이 {len(hits)}개 — 게시하지 않음")
+    return hits[0].parent
+
+
 def verify(pid):
     """승인 기록의 sha256 과 지금 파일이 모두 같은지. 다르면 게시하지 않는다(AGENTS §3)."""
-    rec = json.loads(APPROVED.read_text(encoding="utf-8"))
+    d = post_dir(pid)
+    rec = json.loads((d / "APPROVED.json").read_text(encoding="utf-8"))
     item = next((x for x in rec["items"] if x["id"] == pid), None)
     if not item:
         raise SystemExit(f"{pid} 는 승인 기록에 없다 — 게시하지 않음")
@@ -72,7 +81,7 @@ def verify(pid):
             bad.append(path)
     if bad:
         raise SystemExit(f"{pid} 지문 불일치(승인 뒤 바뀜): {bad} — 게시하지 않음")
-    return json.loads((ROOT / f"posts/2026-W46/{pid}.json").read_text(encoding="utf-8"))
+    return json.loads((d / f"{pid}.json").read_text(encoding="utf-8"))
 
 
 def media_of(post):
@@ -80,6 +89,8 @@ def media_of(post):
         return "VIDEO", [ROOT / post["video"]]
     if post.get("carousel"):
         return "CAROUSEL", [ROOT / x for x in post["carousel"]]
+    if post.get("image"):
+        return "IMAGE", [ROOT / post["image"]]
     return "IMAGE", [ROOT / f"out/cards/W46/{post['id']}.jpg"]
 
 
@@ -175,6 +186,31 @@ def publish(pid):
     return rec
 
 
+def first_comment(pid):
+    """게시물의 first_comment 를 우리 계정의 첫 답글로 단다(「예시:」로 밝힌 문구 — 부계정 · 가짜 질문 아님)."""
+    post = verify(pid)
+    msg = (post.get("first_comment") or "").strip()
+    if not msg:
+        return None
+    recs = [json.loads(l) for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()]
+    main = next((r for r in recs if r.get("id") == pid and r.get("platform") == "threads"), None)
+    if not main:
+        raise SystemExit(f"{pid} 스레드 본글 기록이 없다")
+    if any(r.get("id") == pid and r.get("platform") == "threads-comment" for r in recs):
+        raise SystemExit(f"{pid} 첫 답글은 이미 달았다")
+    uid, user = whoami()
+    if user != EXPECT_USER:
+        raise SystemExit(f"토큰 계정이 {user}")
+    cid = api("POST", f"{uid}/threads", media_type="TEXT", text=msg, reply_to_id=main["post_id"])["id"]
+    wait_ready(cid)
+    mid = publish_container(uid, cid, msg)
+    info = api("GET", mid, fields="id,permalink,timestamp")
+    rec = {"id": pid, "platform": "threads-comment", "post_id": info["id"], "permalink": info.get("permalink"), "at": info.get("timestamp")}
+    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return rec
+
+
 def r2_test():
     s3 = r2()
     p = ROOT / "out/cards/W46/P0001.jpg"
@@ -202,6 +238,10 @@ def main():
         if "--yes" not in sys.argv:
             raise SystemExit("실제 게시는 --yes 가 있어야 한다")
         print(json.dumps(publish(sys.argv[2]), ensure_ascii=False))
+    elif cmd == "comment":
+        if "--yes" not in sys.argv:
+            raise SystemExit("실제 답글은 --yes 가 있어야 한다")
+        print(json.dumps(first_comment(sys.argv[2]), ensure_ascii=False))
     else:
         print(__doc__)
         return 2

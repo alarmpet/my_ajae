@@ -116,6 +116,25 @@ def publish(pid):
     return rec
 
 
+def first_comment(pid):
+    """게시물의 first_comment 를 우리 계정의 첫 댓글로(「예시:」로 밝힌 문구). 권한(instagram_business_manage_comments)이 없으면 실패한다."""
+    post = verify(pid)
+    msg = (post.get("first_comment") or "").strip()
+    if not msg:
+        return None
+    recs = [json.loads(l) for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()]
+    main_rec = next((r for r in recs if r.get("id") == pid and r.get("platform") == "instagram"), None)
+    if not main_rec:
+        raise SystemExit(f"{pid} 인스타 본글 기록이 없다")
+    if any(r.get("id") == pid and r.get("platform") == "instagram-comment" for r in recs):
+        raise SystemExit(f"{pid} 첫 댓글은 이미 달았다")
+    cid = api("POST", f"{main_rec['post_id']}/comments", message=msg)["id"]
+    rec = {"id": pid, "platform": "instagram-comment", "post_id": cid, "on": main_rec["post_id"]}
+    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return rec
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     if cmd == "whoami":
@@ -125,6 +144,10 @@ def main():
         if "--yes" not in sys.argv:
             raise SystemExit("실제 게시는 --yes 가 있어야 한다")
         print(json.dumps(publish(sys.argv[2]), ensure_ascii=False))
+    elif cmd == "comment":
+        if "--yes" not in sys.argv:
+            raise SystemExit("실제 댓글은 --yes 가 있어야 한다")
+        print(json.dumps(first_comment(sys.argv[2]), ensure_ascii=False))
     else:
         print(__doc__)
         return 2

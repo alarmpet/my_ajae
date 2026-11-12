@@ -44,6 +44,8 @@ const URL_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|io|app|dev|kr|co)\b/i;
 
 /** 글의 숫자 — 쉼표를 뗀 정수 · 소수. 날짜처럼 보이는 1~2자리 단독 숫자도 센다(근거에 있어야 한다). */
 export function numbersIn(text) {
+  // 줄 첫머리의 목록 번호(「1. 」 「2) 」)는 사실 숫자가 아니다 — 목록형 글(2026-11-13)을 위해 뺀다.
+  text = String(text).replace(/^([ \t]*)\d{1,2}[.)](?=[ \t])/gm, '$1');
   // 「3D · 2D」는 숫자가 아니라 낱말이다 — 뒤에 D 가 붙은 한 자리 숫자는 뺀다.
   return [...String(text).matchAll(/\d[\d,]*(?:\.\d+)?(?![\dD])/g)]
     .filter((m) => !/^\d[Dd]$/.test(String(text).slice(m.index, m.index + 2)))

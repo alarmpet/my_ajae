@@ -1,0 +1,19 @@
+{
+ "_note": "사용자 지시 2026-11-13 「오전 8시20분, 오후 6시20분 두 번」. 실행: python tools/run_schedule.py --sched posts/list/SCHEDULE.json --wait",
+ "platforms": [
+  "threads",
+  "instagram"
+ ],
+ "slots": [
+  {
+   "date": "2026-11-13",
+   "time": "08:20",
+   "id": "L0001"
+  },
+  {
+   "date": "2026-11-13",
+   "time": "18:20",
+   "id": "L0002"
+  }
+ ]
+}
