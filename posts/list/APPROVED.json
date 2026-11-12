@@ -1,15 +1,15 @@
 {
  "batch": "list",
- "approved_by": "사용자(채팅 「승인 , 올려」 2026-11-13)",
+ "approved_by": "사용자(채팅 「승인 , 올려」 → 「원래 판으로 바꿔」 2026-11-13)",
  "approved_at": "2026-11-13",
  "rule": "AGENTS §3 — 아래 지문과 다른 파일은 게시하지 않는다",
- "note": "목록형 첫 두 글. 사용자가 붙여 준 판을 장부와 대조해 고친 본문(사실과 다른 문장 수정) + 실제 코드 줄 카드.",
+ "note": "사용자가 붙여 준 원래 판 그대로. 스레드 500자 초과분은 이어지는 답글로. 이전 지문은 무효.",
  "items": [
   {
    "id": "L0001",
    "app": "maker",
    "files": {
-    "posts/list/L0001.json": "270a44d5e8b1d539c14150c1e2135b3995d29ffc0a1854264b9c00cfae6e3442",
+    "posts/list/L0001.json": "0234a1725e90adb096c69602e617f0509b11bdd95b568c5cc2befe92d34bc8c3",
     "out/cards/list/L0001.jpg": "1752a6ee5931fbd4e5f628bba0257d90cb5460c9b10e7ed10f20079d72b89a4b"
    }
   },
@@ -17,7 +17,7 @@
    "id": "L0002",
    "app": "yonghane",
    "files": {
-    "posts/list/L0002.json": "31380f81561181898df2937783af05a036b293fcd82c4999788574e2c0518689",
+    "posts/list/L0002.json": "8ce0becbef614aabd72f46a166ea81dae91c01376d11c040a883704957f921b9",
     "out/cards/list/L0002.jpg": "62d06f3b47a0c671fce5dbc8cb995361e16dbeb2cb734c609ff856bcff9d70d3"
    }
   }

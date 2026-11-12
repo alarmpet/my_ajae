@@ -90,3 +90,11 @@ test('목록 번호(줄 첫머리 1. 2) )는 숫자로 세지 않는다 — 본�
   assert.deepEqual(numbersIn('10. 열 번째'), []);
   assert.deepEqual(numbersIn('값 1. 끝'), ['1']);
 });
+
+test('「N단계」는 숫자로 세지 않고, allow_numbers 는 통과시킨다', () => {
+  assert.deepEqual(numbersIn('✔️ 4단계 (첫 장면) · 5단계 중 어디'), []);
+  const ledger = loadLedger();
+  const p = { id: 'X', app: 'maker', ledger: ['E016'], text: '확률은 0%입니다' };
+  assert.ok(checkPost(p, ledger).fail.some((f) => f.includes('숫자: 0')));
+  assert.deepEqual(checkPost({ ...p, allow_numbers: ['0'] }, ledger).fail, []);
+});

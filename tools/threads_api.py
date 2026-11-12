@@ -153,9 +153,8 @@ def publish(pid):
     if LOG.exists() and any(json.loads(l).get("id") == pid and json.loads(l).get("platform") == "threads"
                             for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()):
         raise SystemExit(f"{pid} 는 이미 스레드에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
-    text = post["text"].strip()
-    if len(text) > MAX_TEXT:
-        raise SystemExit(f"글 {len(text)}자 > {MAX_TEXT}")
+    parts = split_text(post["text"].strip())
+    text = parts[0]
     kind, files = media_of(post)
     s3 = r2()
     stamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -179,11 +178,47 @@ def publish(pid):
         info = api("GET", mid, fields="id,permalink,timestamp,media_type")
     finally:
         remove(s3, keys)  # 게시 성공 · 실패와 상관없이 공개 버킷에서 지운다
+    cont, prev = [], info["id"]
+    for part in parts[1:]:  # 500자를 넘는 글은 이어지는 답글로(원문 그대로, 자르지 않음)
+        c = api("POST", f"{uid}/threads", media_type="TEXT", text=part, reply_to_id=prev)["id"]
+        wait_ready(c)
+        prev = publish_container(uid, c, part)
+        cont.append(prev)
     rec = {"id": pid, "platform": "threads", "media_type": kind, "post_id": info["id"], "permalink": info.get("permalink"),
-           "at": info.get("timestamp"), "files_sha256": {str(f.relative_to(ROOT)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}}
+           "continued": cont, "at": info.get("timestamp"), "files_sha256": {str(f.relative_to(ROOT)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}}
     with LOG.open("a", encoding="utf-8", newline="\n") as fh:
         fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     return rec
+
+
+def split_text(text, limit=MAX_TEXT):
+    """스레드 한도(500자)에 맞게 줄 단위로 나눈다 — 빈 줄(문단) 경계를 먼저, 안 되면 줄 경계. 글자는 바꾸지 않는다."""
+    if len(text) <= limit:
+        return [text]
+    NL = chr(10)
+    paras = text.split(NL + NL)
+    parts, cur = [], ""
+    for para in paras:
+        cand = (cur + NL + NL + para) if cur else para
+        if len(cand) <= limit:
+            cur = cand
+            continue
+        if cur:
+            parts.append(cur)
+        cur = ""
+        for line in para.split(NL):
+            cand = (cur + NL + line) if cur else line
+            if len(cand) <= limit:
+                cur = cand
+            else:
+                if cur:
+                    parts.append(cur)
+                if len(line) > limit:
+                    raise SystemExit(f"한 줄이 {len(line)}자 — 나눌 수 없다")
+                cur = line
+    if cur:
+        parts.append(cur)
+    return parts
 
 
 def first_comment(pid):

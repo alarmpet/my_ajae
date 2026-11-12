@@ -43,6 +43,8 @@ const URL_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|io|app|dev|kr|co)\b/i;
 export function numbersIn(text) {
   // 줄 첫머리의 목록 번호(「1. 」 「2) 」)는 사실 숫자가 아니다 — 목록형 글(2026-11-13)을 위해 뺀다.
   text = String(text).replace(/^([ \t]*)\d{1,2}[.)](?=[ \t])/gm, '$1');
+  // 「1단계 · 5단계 중」 같은 순서 낱말도 사실 숫자가 아니다(2026-11-13).
+  text = text.replace(/\d{1,2}(?=\s*단계)/g, '');
   // 「3D · 2D」는 숫자가 아니라 낱말이다 — 뒤에 D 가 붙은 한 자리 숫자는 뺀다.
   return [...String(text).matchAll(/\d[\d,]*(?:\.\d+)?(?![\dD])/g)]
     .filter((m) => !/^\d[Dd]$/.test(String(text).slice(m.index, m.index + 2)))
@@ -84,9 +86,11 @@ export function checkPost(post, ledger) {
     fail.push(`앱(${post.app})과 장부 사건의 앱이 다르다`);
   }
   const known = new Set(entries.flatMap((e) => numbersIn((e.facts ?? []).join(' ') + ' ' + (e.title ?? ''))));
+  // allow_numbers: 사용자가 보고 「그냥 가」로 넘긴 숫자(게시물에 이유와 함께 적는다)
+  for (const n of post.allow_numbers ?? []) known.add(String(n));
   for (const n of new Set(numbersIn(body))) if (!known.has(n)) fail.push(`장부 근거에 없는 숫자: ${n}`);
   for (const [re, why] of HOLD) if (re.test(body)) hold.push(`보류 표현: ${why}`);
-  if ([...String(post.text ?? '')].length > 500) hold.push('본문 500자 초과 — 스레드 글자 한도(미대조)');
+  if ([...String(post.text ?? '')].length > 500) hold.push('본문 500자 초과 — 스레드에는 이어지는 답글로 나눠 올린다(threads_api.split_text)');
   return { fail, hold };
 }
 
