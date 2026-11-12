@@ -76,7 +76,7 @@ def main():
     ai_tag(d)
     y = block(d, 820, '코딩 모르는 40대가', 64, WHITE)
     y = block(d, y, '76만 회 쇼츠를 만든 순서', 76, YELLOW)
-    block(d, y + 20, '같은 채널 쇼츠 49개 중 하나', 44, GRAY)
+    block(d, y + 20, '내가 없을 때도 우리 집 강아지가 즐거웠으면 해서', 40, GRAY)
     im.save(OUT / '01.jpg', quality=92)
     # 2 구조
     im, d = base(2)
@@ -116,7 +116,7 @@ def main():
     y = block(d, y + 30, '두 그림 사이를 프레임 모드로 채운다', 48, WHITE)
     y = block(d, y + 60, '제목은 사람이 정하고', 56, WHITE)
     y = block(d, y, 'AI 표시는 켜고 올린다', 56, YELLOW)
-    y = block(d, y + 80, '같은 채널 쇼츠 49개 중 76만 회는 이 하나.', 46, GRAY)
+    y = block(d, y + 80, '우리 집 강아지가 내가 없을 때도 이렇게 즐거웠으면 하는 마음으로 만들었다.', 44, GRAY)
     block(d, y + 40, '아재도 한다', 72, ORANGE)
     im.save(OUT / '06.jpg', quality=92)
     sheet = Image.new('RGB', (W // 4 * 6, H // 4), 'white')
