@@ -1,0 +1,11 @@
+{
+ "username": "my_ajae",
+ "ig_user_id": "17841475790447669",
+ "account_type": "MEDIA_CREATOR",
+ "api_base": "https://graph.instagram.com/v25.0",
+ "meta_app": "petblossom-feed (Instagram 앱 ID 1112774308344937, Instagram 로그인 방식)",
+ "secret": "Windows 자격 증명 관리자 my_ajae/ig-token (값은 저장소에 없음)",
+ "token_issued": "2026-11-12",
+ "refresh_before": "2027-01-01",
+ "_note": "대시보드 「토큰 생성」 장기 토큰(60일로 추정 — 미확인). 발급 24시간 뒤부터 갱신 가능(Meta 문서). 게시 도구 tools/ig_api.py"
+}
