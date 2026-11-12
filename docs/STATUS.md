@@ -37,7 +37,8 @@
 
 - [x] ECC(everything-claude-code) 검토 — 전체 설치 안 함, 금지 · 보류 표현만 `check_post` 로 옮김(`docs/reference/2026-11-12-ecc-review.md`, 시험 12/12)
 - [x] 마케팅 스킬 6개(coreyhaines31/marketingskills, MIT) 프로젝트 범위로 도입 · `.agents/product-marketing.md` v1(장부 근거만) — `.claude/skills/README-marketingskills.md` (2026-11-12)
-- [x] 첫 주 글 7 · 카드 7 · 보카라이더 20초 영상 → 승인 대기(`posts/2026-W46/README.md`)
+- [x] **첫 주 묶음 승인(사용자 2026-11-12)** — 글 10(P0001~P0010) · 카드 · 캐러셀 6 · 영상 3. 전체 sha256 은 `posts/2026-W46/APPROVED.json`. 카드 · 영상은 `out/`(git 밖)에 있다 → **다시 렌더하면 지문이 바뀌어 게시 불가**, 건드리지 않는다
+- [ ] **게시 방법 정하기**: 메타 개발자 앱 · Threads/인스타 API 권한(사용자 클릭) 전이라 예약 게시 불가. 그 전에는 사용자가 앱에서 직접 올리고 에이전트는 올릴 글 · 파일을 날짜별로 준비
 - [ ] 와일드 크라운 재배포(별도 세션 — 랭크 DB 방식 사용자 결정 대기) → 장부 · 영상
 
 ## 정해야 할 것(사용자)

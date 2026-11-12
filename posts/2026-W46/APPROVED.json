@@ -1,0 +1,111 @@
+{
+ "week": "2026-W46",
+ "approved_by": "사용자(채팅 「승인」)",
+ "approved_at": "2026-11-12",
+ "rule": "AGENTS §3 — 아래 지문과 다른 파일은 게시하지 않는다",
+ "items": [
+  {
+   "id": "P0001",
+   "day": "월",
+   "app": "yonghane",
+   "files": {
+    "posts/2026-W46\\P0001.json": "211efcd51fb431399a7f1666afab6cbfa7754eb215b88d3a157ca44c86aac3c4",
+    "out/cards/W46/P0001.jpg": "d3ee1e0eb44c77dcd23d798741d934f0a7452f367c8631e389422edd64f5163c"
+   }
+  },
+  {
+   "id": "P0002",
+   "day": "화",
+   "app": "maker",
+   "files": {
+    "posts/2026-W46\\P0002.json": "bbd2ef871dc9565da7afa5b3281b526f8bcac59014695d5a6b101b47df1c618e",
+    "out/cards/W46/P0002.jpg": "e68eeb413a67d5a3871b2ced78aba3fb1577195d02d6cea39bd407aa1496abef"
+   }
+  },
+  {
+   "id": "P0003",
+   "day": "수",
+   "app": "yonghane",
+   "files": {
+    "posts/2026-W46\\P0003.json": "6e80c1cebffe68e9b81412f95e334f146b225f3d578200b5195b425641bd553f",
+    "out/cards/W46/P0003.jpg": "e718290d95f87fde33238a683637777e716781a05fa794d7b96451227304feaa"
+   }
+  },
+  {
+   "id": "P0004",
+   "day": "목",
+   "app": "maker",
+   "files": {
+    "posts/2026-W46\\P0004.json": "6242f2c41fc9d02b6c5c42c6afd2c5e699ecf0606391b5782a5e42badfd0ae73",
+    "out/cards/W46/P0004.jpg": "c15a40cbbe085f5982dacef2025c9a4de65b853cce6327aeae60edf2c9e702f5"
+   }
+  },
+  {
+   "id": "P0005",
+   "day": "금",
+   "app": "vocarider",
+   "files": {
+    "posts/2026-W46\\P0005.json": "622b71436ba4af397d59c915a7648cff1ac4ff51b43bc3295076fd38740cdc59",
+    "out/cards/W46/P0005.jpg": "634b7ea16673ee617f3eedeb0a3768679265881015df9b5529b419e00febeb8f"
+   }
+  },
+  {
+   "id": "P0006",
+   "day": "토",
+   "app": "wildcrown",
+   "files": {
+    "posts/2026-W46\\P0006.json": "0968527676f0e952937b96924c49769bbae4828e00ff67407c939a9f19f4f9d8",
+    "out/cards/W46/P0006.jpg": "1bdbcba456a3f87e06d4328c6bba799e1f7ff81e37355ad405a961da950ee33a"
+   }
+  },
+  {
+   "id": "P0007",
+   "day": "일",
+   "app": "vocarider",
+   "files": {
+    "posts/2026-W46\\P0007.json": "9d5cc82d1b3a8053dcce8f820244a9a3230bbfc0e28b4c5b8996cf7b33de4e49",
+    "out/cards/W46/P0007.jpg": "ba9c3647d21189938fbbc31e18be115931115416f60b6c3f91f2629e3345ad02"
+   }
+  },
+  {
+   "id": "P0008",
+   "day": "첫 글",
+   "app": "maker",
+   "files": {
+    "posts/2026-W46\\P0008.json": "10b6590b57ca0533b56fa93e9c4a9408e91781bbbe8ec2aa983f62861a3f11bb",
+    "out/cards/W46/P0008.jpg": "2be1555e3bd2ff6b377464434331541f4c9beaffb700c0ec44cb9282cdf7b4bd",
+    "out/video/maker-76/maker-76.mp4": "1f8e98a502f71c939677c0ed9142f8246fc1054a11a0d35b012e3f628701ff40"
+   }
+  },
+  {
+   "id": "P0009",
+   "day": "보카라이더 릴스",
+   "app": "vocarider",
+   "files": {
+    "posts/2026-W46\\P0009.json": "fa286afd4e782fc01e2af8bc636d065089c6ee71b6019c08760404c770a40d54",
+    "out/cards/W46/P0009.jpg": "5fb95047305f461e972aa05b69cdfa552f90fbbc49619833f8a658e49cdbf27d",
+    "out/video/vr-cf/vocarider-cf-cut.mp4": "376e868af6ce8170a25388d19f73f0ee2dbd2eb3a489b98badd3829ddbba3cd8"
+   }
+  },
+  {
+   "id": "P0010",
+   "day": "캐러셀(인스타)",
+   "app": "maker",
+   "files": {
+    "posts/2026-W46\\P0010.json": "9a2dfa7247805a8517f8c1be5203d66b95b4e32acc286f6da7ecbeb813415b45",
+    "out/cards/W46/carousel-76/01.jpg": "611bfc5b098f400dddff88d880dfebfab1445d31ff8d2adbc08cbaa36f86593c",
+    "out/cards/W46/carousel-76/02.jpg": "857af5bf7c2f829fb9771f98acd60325f0d0bb48e11115195f9ffd89fa2fad60",
+    "out/cards/W46/carousel-76/03.jpg": "b34990bc88f394291a2efc56c6fbf7ea03d25311a1ff78babb3ac1116d6026b0",
+    "out/cards/W46/carousel-76/04.jpg": "ed263fca0bfa2ef85c4a9b3b7bc59eff549441f226b5c95df9b3c6cea7f5b435",
+    "out/cards/W46/carousel-76/05.jpg": "cd1296fb43ceeb793933869169ab33c29d281d1f8fdd611f4948b373e37407cb",
+    "out/cards/W46/carousel-76/06.jpg": "1b098c8fae89eadb1f5b52940d1880275c524efdc046f325d54fc1cb730c30f3"
+   }
+  },
+  {
+   "id": "VIDEO-vr-promo-w46",
+   "files": {
+    "out/video/vr-promo-w46/vocarider-promo-w46.mp4": "7c460bc45261e38cf828c922967dfe9277055e2ee14c433c2001d361112b40a9"
+   }
+  }
+ ]
+}
