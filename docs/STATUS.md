@@ -36,6 +36,9 @@
 - [ ] 1주 뒤: 사용자 시간 · 렌더 시간 실측으로 빈도 고정
 
 - [x] ECC(everything-claude-code) 검토 — 전체 설치 안 함, 금지 · 보류 표현만 `check_post` 로 옮김(`docs/reference/2026-11-12-ecc-review.md`, 시험 12/12)
+- [x] 마케팅 스킬 6개(coreyhaines31/marketingskills, MIT) 프로젝트 범위로 도입 · `.agents/product-marketing.md` v1(장부 근거만) — `.claude/skills/README-marketingskills.md` (2026-11-12)
+- [x] 첫 주 글 7 · 카드 7 · 보카라이더 20초 영상 → 승인 대기(`posts/2026-W46/README.md`)
+- [ ] 와일드 크라운 재배포(별도 세션 — 랭크 DB 방식 사용자 결정 대기) → 장부 · 영상
 
 ## 정해야 할 것(사용자)
 - 영상 빈도: 렌더 실측 뒤
