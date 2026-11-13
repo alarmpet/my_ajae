@@ -71,7 +71,8 @@ AGENTS.md 의 절대 규칙이 이 스킬보다 위다. 특히 **장부에 없�
 7. **사용자에게 보이기** — 본문 전문. 걸린 문장이 있으면 한 줄 질문으로만. 사용자가 「승인」해야 다음으로.
 8. **승인 지문** — `posts/list/APPROVED.json` 의 items 에 `{id, app, files: {json, jpg 의 sha256}}` 추가, `approved_by` 에 사용자 말 그대로. 승인 뒤 파일을 고치면 다시 승인받는다.
 9. **일정** — `posts/list/SCHEDULE.json` 의 slots 에 `{"date", "time": "08:20" | "18:20", "id"}`. 이미 지난 시각은 다음 칸으로.
-10. **게시** — 먼저 `--dry`, 그다음 백그라운드로:
+10. **게시 직전 확인** — 슬롯마다 `python -X utf8 tools/run_schedule.py --show <id>` 전문을 사용자에게 그대로 보여 주고 「올려」를 받으면 `--confirm <id> --date <날짜> --by "<사용자 말>"`. 대기 프로세스는 확인 없는 슬롯을 2시간 앞두고 전문을 출력하고 코드 3 으로 끝난다 — 그 출력을 보여 주고, 확인받은 뒤 다시 건다. 확인이 없으면 올리지 않는다(사용자 지시 2026-11-13).
+    **게시** — 먼저 `--dry`, 그다음 백그라운드로:
     ```bash
     python tools/run_schedule.py --sched posts/list/SCHEDULE.json --wait --dry
     python -u tools/run_schedule.py --sched posts/list/SCHEDULE.json --wait     # run_in_background
