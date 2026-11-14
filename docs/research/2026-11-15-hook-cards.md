@@ -41,8 +41,14 @@
 - 밝은 종이색 바탕 + 글마다 다른 파스텔 색.
 - 가져오지 않은 것: 「~했더니 결혼함」 같은 지어낸 사연 · 잘 맞힌다는 말 · 값 · 추첨. 훅은 리뷰에 실제로 나온 불만(장부 E041)만 쓴다.
 
+## 4-1. 3판 — 캐릭터를 Google Flow 로 (2026-11-15 사용자 「flow 로 그리는데 한 장씩 시간 텀 1~2분 정도씩 주고 생성해」)
+- 이미지 모드(Nano Banana 2.1 · 1:1 · x1 · 「생성 시 0 크레딧」)로 여섯 장. 한 장씩 제출 → 완성 확인 → 받기 → 90초 쉼. 실패 0건, 한 장에 약 30초.
+- 새 프로젝트가 **동영상 모드로 열렸다** — 이미지로 바꾸고 칩 글자를 확인한 뒤에만 제출하게 했다(스크립트가 칩이 다르면 멈춘다).
+- 프롬프트 틀: 「Cute Korean instatoon style illustration, thick clean black outlines, flat soft pastel colors … One young Korean woman with a short black bob haircut, cream cardigan over a white t-shirt, waist up, on the right half … [장면 한 문장] … The left third is plain empty background. Text-free image, speech-bubble-free image.」 같은 인물 묘사를 여섯 번 그대로 써서 캐릭터가 이어졌다.
+- 그림은 `out/art/hook/c1-ad.jpg` … `c6-star.jpg`(이 PC 에만). 스크립트 `C:/Users/petbl/ego/flow-hook-20261115-0300/round-01~04.mjs`.
+- 글자 · 말풍선은 그림에 넣지 않고 `make_hook_cards.py` 가 얹는다.
+
 ## 5. 아직 약한 곳
 
-- 캐릭터가 단순한 낙서다. 광고들은 그림 작가가 그린 인스타툰이다 — 더 올리려면 Google Flow 로 캐릭터를 그려 넣는다(글자는 넣지 않고 그림만).
 - ③ 장에 용하네 실제 화면 캡처를 넣으면 「증거」가 된다(광고들이 하는 방식).
 - 어느 훅이 먹히는지는 올려 봐야 안다 — `post-review` 로 잰다.

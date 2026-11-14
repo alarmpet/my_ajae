@@ -11,7 +11,7 @@
  "first_comment": "용하네는 여기 있습니다 → www.yonghane.com",
  "source_note": "리뷰 조사 docs/research/2026-11-15-saju-app-reviews.md. 승인 전.",
  "image": "out/cards/list/L0021-1.jpg",
- "card_visual": "훅 카드 2판 네 장 묶음(tools/make_hook_cards.py) — 낙서 캐릭터 + 말풍선 + 한 줄 사연. 실제 인물 · 실제 앱 화면이 아니다. 근거 docs/research/2026-11-15-hook-cards.md",
+ "card_visual": "훅 카드 3판 네 장 묶음(tools/make_hook_cards.py). 캐릭터 그림은 Google Flow(Nano Banana 2.1)로 2026-11-15 생성한 글자 없는 그림(out/art/hook/) — 실제 인물 · 실제 앱 화면이 아니다. 글자는 직접 얹었다. 근거 docs/research/2026-11-15-hook-cards.md",
  "cards": {
   "color": "pink",
   "mood": "angry",

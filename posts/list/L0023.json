@@ -11,7 +11,7 @@
  "first_comment": "갈리는 자리 전체는 여기 → www.yonghane.com/help/differences/",
  "source_note": "2026-11-15 사주 앱 리뷰 조사(docs/research/2026-11-15-saju-app-reviews.md)에서 뽑은 글. 승인 전.",
  "image": "out/cards/list/L0023-1.jpg",
- "card_visual": "훅 카드 2판 네 장 묶음(tools/make_hook_cards.py) — 낙서 캐릭터 + 말풍선 + 한 줄 사연. 실제 인물 · 실제 앱 화면이 아니다. 근거 docs/research/2026-11-15-hook-cards.md",
+ "card_visual": "훅 카드 3판 네 장 묶음(tools/make_hook_cards.py). 캐릭터 그림은 Google Flow(Nano Banana 2.1)로 2026-11-15 생성한 글자 없는 그림(out/art/hook/) — 실제 인물 · 실제 앱 화면이 아니다. 글자는 직접 얹었다. 근거 docs/research/2026-11-15-hook-cards.md",
  "cards": {
   "color": "lilac",
   "mood": "dizzy",

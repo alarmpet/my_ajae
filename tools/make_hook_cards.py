@@ -152,6 +152,58 @@ def foot(d, n, total, hint):
         d.text((W - 70 - tw(d, hint, f), 1272), hint, font=f, fill=INK)
 
 
+ART = {'L0021': 'c1-ad', 'L0022': 'c2-wrong', 'L0023': 'c3-differ', 'L0024': 'c4-login', 'L0025': 'c5-alarm', 'L0026': 'c6-star'}
+
+
+def art_of(pid):
+    """Google Flow(Nano Banana)로 그린 캐릭터 그림(글자 없음). 없으면 None — 그때는 낙서 캐릭터로 그린다."""
+    f = ROOT / f'out/art/hook/{ART.get(pid, "")}.jpg'
+    return Image.open(f).convert('RGB') if f.exists() else None
+
+
+def card_hook_art(c, art):
+    bg = art.getpixel((12, 12))
+    im = Image.new('RGB', (W, H), bg)
+    im.paste(art.resize((W, W), Image.LANCZOS), (0, H - W))
+    d = ImageDraw.Draw(im)
+    f = font(46, 'Bold')
+    d.text(((W - tw(d, c['tag'], f)) / 2, 70), c['tag'], font=f, fill=(90, 84, 80))
+    lines = c['hook']
+    size = 128
+    while max(tw(d, ln, font(size)) for ln in lines) > W - 120:
+        size -= 4
+    y = 146
+    for i, ln in enumerate(lines):
+        marker_text(d, ln, y, size, mark=(i == len(lines) - 1))
+        y += int(size * 1.28)
+    bubble(d, 60, 640, c['bubble'], size=56, tail='right')
+    d.rectangle((0, 1240, W, H), fill=PAPER)
+    d.line((0, 1240, W, 1240), fill=INK, width=5)
+    foot(d, 0, 4, '넘겨 보기 →')
+    return im
+
+
+def card_ask_art(c, art):
+    bg = art.getpixel((12, 12))
+    im = Image.new('RGB', (W, H), bg)
+    k = 760
+    im.paste(art.resize((k, k), Image.LANCZOS), (W - k, 1240 - k))
+    d = ImageDraw.Draw(im)
+    lines = c['ask']
+    size = 100
+    while max(tw(d, ln, font(size)) for ln in lines) > W - 120:
+        size -= 4
+    y = 150
+    for i, ln in enumerate(lines):
+        marker_text(d, ln, y, size, mark=(i == len(lines) - 1))
+        y += int(size * 1.34)
+    bubble(d, 70, 640, c.get('ask_bubble', '댓글로 알려 주세요'), size=50, tail='right')
+    d.rectangle((0, 1240, W, H), fill=PAPER)
+    d.line((0, 1240, W, 1240), fill=INK, width=5)
+    foot(d, 3, 4, '')
+    return im
+
+
 def card_hook(c, color):
     im = Image.new('RGB', (W, H), PAPER)
     d = ImageDraw.Draw(im)
@@ -229,10 +281,11 @@ def make(pid):
     post = json.loads((ROOT / f'posts/list/{pid}.json').read_text(encoding='utf-8'))
     c = post['cards']
     color = c['color']
-    ims = [card_hook(c, color),
+    art = art_of(pid)
+    ims = [card_hook_art(c, art) if art else card_hook(c, color),
            card_list(c, color, 1, c['pain_title'], c['pain']),
            card_list(c, color, 2, c['answer_title'], c['answer'], numbered=c.get('answer_numbered', True), big=c.get('answer_note')),
-           card_ask(c, color)]
+           card_ask_art(c, art) if art else card_ask(c, color)]
     outs = []
     for i, im in enumerate(ims, 1):
         out = ROOT / f'out/cards/list/{pid}-{i}.jpg'
