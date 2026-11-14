@@ -33,6 +33,38 @@
     "posts/list/L0017.json": "18f43b91521748dab5ac713ef5f8233031da8c094b71acad58c81049b3e6a551",
     "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "862e1813ce1cc379fa7188496ecc738df918bd43cc73adabf2bca5ac4a6e7a5d"
    }
+  },
+  {
+   "id": "L0018",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
+   "approved_at": "2026-11-15",
+   "files": {
+    "posts/list/L0018.json": "19bd9058fcf4db8d317e9afc02b03b471b30d7ed146419aec032172cdad01f5a",
+    "out/cards/list/L0018.jpg": "a55737805c548f9697784c7157549d3e6a479b6b5b6ef32fb0859d1a518a6c03"
+   }
+  },
+  {
+   "id": "L0019",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
+   "approved_at": "2026-11-15",
+   "files": {
+    "posts/list/L0019.json": "17da14d66dbc01e9d4d91406a03f9b34d8ff652e69c0593be2f8e7ceefbfe2c7",
+    "out/cards/list/L0019-1.jpg": "1163a3d85615a6682c12c119c6be242fb106b5e00be98464c31a505b2fcd0bf0",
+    "out/cards/list/L0019-2.jpg": "80eb226efaab944ee7e73837996fb0cee4c126289ee0d68df47e1af4833a8f56",
+    "out/cards/list/L0019-3.jpg": "20369e56ade5463543c32363427179012163c900eb0faa9cb822aa78bf2efec3"
+   }
+  },
+  {
+   "id": "L0020",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
+   "approved_at": "2026-11-15",
+   "files": {
+    "posts/list/L0020.json": "6c5d84ea78da39341d274ae8f15eb7e58d069bcf9cafb7a72cf13d9982e457e9",
+    "out/cards/list/L0020.jpg": "5da5d9da2a084771eec201e49142424b62a13546acbc437bcebb81eaa4ee76c6"
+   }
   }
  ]
 }
