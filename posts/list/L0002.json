@@ -15,7 +15,8 @@
  "pillar": "앱 알리기",
  "carousel": [
   "out/cards/list/L0002.jpg",
-  "out/cards/list/L0002-screen.jpg"
+  "out/cards/list/L0002-toon1.jpg",
+  "out/cards/list/L0002-toon2.jpg"
  ],
- "screen_visual": "둘째 장: 운영 사이트 www.yonghane.com/result/ 를 앱의 「예시 결과」(가상의 인물)로 열어 2026-11-14 캡처. 「여러 풀이가 함께 가리키는 곳」 구역만 잘랐다 — 출생 정보 없음. 그 화면의 광고 · 쿠팡 요소 0개(브라우저에서 셈)."
+ "screen_visual": "둘째 · 셋째 장: 운영 사이트 www.yonghane.com/result?system=saju 의 「웹툰」 보기를 앱의 「예시 결과」(가상의 인물)로 열어 2026-11-14 캡처 — 「나를 나타내는 글자」 · 「오행의 흐름」 장면. 출생 정보 없음. 그 화면의 광고 · 쿠팡 요소 0개(브라우저에서 셈). 사용자 「웹툰 풀이 화면 그런 거」."
 }
