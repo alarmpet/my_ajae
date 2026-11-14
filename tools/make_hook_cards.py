@@ -155,10 +155,19 @@ def foot(d, n, total, hint):
 ART = {'L0021': 'c1-ad', 'L0022': 'c2-wrong', 'L0023': 'c3-differ', 'L0024': 'c4-login', 'L0025': 'c5-alarm', 'L0026': 'c6-star'}
 
 
-def art_of(pid):
-    """Google Flow(Nano Banana)로 그린 캐릭터 그림(글자 없음). 없으면 None — 그때는 낙서 캐릭터로 그린다."""
-    f = ROOT / f'out/art/hook/{ART.get(pid, "")}.jpg'
-    return Image.open(f).convert('RGB') if f.exists() else None
+def art_of(pid, c=None):
+    """Google Flow(Nano Banana)로 그린 캐릭터 그림(글자 없음). 없으면 None — 그때는 낙서 캐릭터로 그린다.
+
+    찾는 순서: 게시물 `cards.art`(저장소 기준 경로) → `out/art/hook/<글 번호>.jpg` → 아래 ART 표(첫 여섯 글).
+    """
+    cands = []
+    if c and c.get('art'):
+        cands.append(ROOT / c['art'])
+    cands += [ROOT / f'out/art/hook/{pid}.jpg', ROOT / f'out/art/hook/{ART.get(pid, "_")}.jpg']
+    for f in cands:
+        if f.exists():
+            return Image.open(f).convert('RGB')
+    return None
 
 
 def card_hook_art(c, art):
@@ -281,7 +290,7 @@ def make(pid):
     post = json.loads((ROOT / f'posts/list/{pid}.json').read_text(encoding='utf-8'))
     c = post['cards']
     color = c['color']
-    art = art_of(pid)
+    art = art_of(pid, c)
     ims = [card_hook_art(c, art) if art else card_hook(c, color),
            card_list(c, color, 1, c['pain_title'], c['pain']),
            card_list(c, color, 2, c['answer_title'], c['answer'], numbered=c.get('answer_numbered', True), big=c.get('answer_note')),

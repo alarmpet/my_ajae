@@ -1,0 +1,11 @@
+{
+ "space_name": "flow-hook",
+ "ratio": "1:1",
+ "gap_sec": 90,
+ "base": "Cute Korean instatoon style illustration, hand-drawn with thick clean black outlines and flat soft pastel colors, simple and minimal like a webtoon ad. One young Korean woman with a short black bob haircut, wearing a cream cardigan over a white t-shirt, drawn from the waist up, placed on the right half of the picture. ",
+ "end": " The left third of the picture is plain empty background with nothing in it. Square composition. Text-free image, speech-bubble-free image.",
+ "jobs": [
+  ["L0027", "She frowns with an angry annoyed face, puffed cheeks and a small red anger mark near her forehead, jabbing her finger hard at the smartphone she holds in her other hand. Plain soft pink background."],
+  ["L0028", "She stares at the smartphone in her hands with a shocked face, wide round eyes, small open mouth and one blue sweat drop on her temple. Plain soft sky blue background."]
+ ]
+}
