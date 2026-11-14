@@ -10,5 +10,10 @@
  "pillar": "앱 알리기",
  "text": "오늘 운세 점수가 낮게 나오면 하루 종일 찝찝하죠.\n별 몇 개에 기분이 오르내리기도 하고요.\n\n'용하네'의 '띠별로 본 한 해'는 이렇게 만들었습니다.\n\n① 점수가 없습니다.\n② 길흉 딱지가 없습니다.\n③ 별점이 없습니다.\n④ 생년월일을 안 넣어도 열립니다.\n\n첫 화면에도 써 놨습니다.\n\"듣기 좋은 말만 하지 않습니다. 계산대로 말합니다.\"\n모르는 것은 지어내지 않고, 모른다고 적습니다.\n\n운세에 점수·별점, 있는 게 좋으세요 없는 게 좋으세요?",
  "first_comment": "용하네는 여기 있습니다 → www.yonghane.com",
- "source_note": "리뷰 조사 docs/research/2026-11-15-saju-app-reviews.md. 승인 전 · 그림 아직 없음."
+ "source_note": "리뷰 조사 docs/research/2026-11-15-saju-app-reviews.md. 승인 전.",
+ "card_tag": "오늘 운세 별 한 개",
+ "card": "그 별 하나에\n*하루가 찝찝하다",
+ "card_sub": "점수 · 별점, 꼭 있어야 할까요?",
+ "image": "out/cards/list/L0026.jpg",
+ "card_visual": "훅 카드(tools/make_hook_cards.py) — 글자는 본문 첫 줄에서, 가운데는 불만의 모양을 그린 도형. 어느 앱의 실제 화면도 아니다."
 }
