@@ -23,6 +23,16 @@
    },
    "approved_by": "사용자(채팅 「승인」 → 「첫 댓글에 넣어」 2026-11-14 — 웹툰 두 장 판 + 첫 댓글에 용하네 주소)",
    "approved_at": "2026-11-14"
+  },
+  {
+   "id": "L0017",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「승인」 2026-11-14 — 용하네 소개 영상 + 글)",
+   "approved_at": "2026-11-14",
+   "files": {
+    "posts/list/L0017.json": "18f43b91521748dab5ac713ef5f8233031da8c094b71acad58c81049b3e6a551",
+    "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "862e1813ce1cc379fa7188496ecc738df918bd43cc73adabf2bca5ac4a6e7a5d"
+   }
   }
  ]
 }
