@@ -117,3 +117,11 @@ test('「N단계」는 숫자로 세지 않고, allow_numbers 는 통과시킨�
   assert.ok(checkPost(p, ledger).fail.some((f) => f.includes('숫자: 0')));
   assert.deepEqual(checkPost({ ...p, allow_numbers: ['0'] }, ledger).fail, []);
 });
+
+test('「광고 없음」은 실패한다 — 광고는 할 계획이다(2026-11-15). 「광고 포함」 같은 관찰은 막지 않는다', () => {
+  for (const t of ['풀이 화면엔 광고 없음', '광고가 하나도 없습니다', '광고는 안 넣었습니다', '광고 없는 사주 앱']) {
+    const r = checkPost({ ...ok, text: t }, ledger);
+    assert.ok(r.fail.some((f) => f.startsWith('금지 표현')), t);
+  }
+  assert.deepEqual(checkPost({ ...ok, text: '다른 앱에는 광고 포함 표시가 있었습니다' }, ledger).fail, []);
+});
