@@ -17,21 +17,21 @@
    "id": "L0002",
    "app": "yonghane",
    "files": {
-    "posts/list/L0002.json": "c79061f8a1eee0ff903d9749585921d7c4a93168873f4d3d42be8ba4beacadbc",
-    "out/cards/list/L0002-toon1.jpg": "bffb76728549a202476a27a273d93d1d5da4ae623f1b1e8f1ff75f935889e525",
-    "out/cards/list/L0002-toon2.jpg": "b613740daeac89959d0a10eed6a3e45f432df50065f248c803910921d52fd1ab"
+    "posts/list/L0002.json": "c655fae0fb3375c4fe520adb860b7fbab4694ec4f0120084f50bf362265cd54e",
+    "out/cards/list/L0002-toon1.jpg": "56dab3139ff7604a71f3ad5a52b52ac63880897909c5cfdafd25c1ac23ba346a",
+    "out/cards/list/L0002-toon2.jpg": "209cb7cbbbe0c6aa730c257c0ed3239dee0b6a8584425087eb48a93f8bc856f2"
    },
-   "approved_by": "사용자(채팅 「승인」 → 「첫 댓글에 넣어」 2026-11-14 — 웹툰 두 장 판 + 첫 댓글에 용하네 주소)",
-   "approved_at": "2026-11-14"
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-15 — 「광고 없음」을 뺀 판)",
+   "approved_at": "2026-11-15"
   },
   {
    "id": "L0017",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-14 — 용하네 소개 영상 + 글)",
-   "approved_at": "2026-11-14",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-15 — 「광고 없음」을 뺀 판)",
+   "approved_at": "2026-11-15",
    "files": {
-    "posts/list/L0017.json": "18f43b91521748dab5ac713ef5f8233031da8c094b71acad58c81049b3e6a551",
-    "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "862e1813ce1cc379fa7188496ecc738df918bd43cc73adabf2bca5ac4a6e7a5d"
+    "posts/list/L0017.json": "c464fc25da08891b1a335b6936c2e81a355f7ec7de1d8b590f014955ffe51465",
+    "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "8696786d7ae0234d6b8e773a55b288f3b64a5b631c6a60f478cf5a98b9cfe149"
    }
   },
   {
