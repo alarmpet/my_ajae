@@ -47,6 +47,25 @@ test('사람 시험 완료 · 어린이 전용은 실패한다', () => {
   assert.ok(checkPost({ id: 'T', app: 'vocarider', ledger: ['E008'], text: '어린이 전용 영단어 게임' }, ledger).fail.length > 0);
 });
 
+test('의료 · 투자 조언은 실패한다 — 경험담은 통과한다(AGENTS §2-3)', () => {
+  for (const t of ['이 운세대로 하면 불면증이 낫습니다', '약 대신 이 앱을 쓰세요', '병원 안 가도 됩니다', '치료 효과가 있어요']) {
+    assert.ok(checkPost({ ...ok, text: t }, ledger).fail.some((f) => f.includes('의료 조언')), t);
+  }
+  for (const t of ['올해는 코인을 사세요', '이 종목 추천합니다', '지금이 매수 타이밍', '수익 보장', '원금 보장됩니다', '투자하세요']) {
+    assert.ok(checkPost({ ...ok, text: t }, ledger).fail.some((f) => f.includes('투자 조언')), t);
+  }
+  for (const t of ['코인 자동 매매를 만들었다가 잃었습니다', '투자 공부는 따로 하세요', '병원 예약 앱이 아닙니다', '낫 놓고 기역 자도 모르던 아재']) {
+    assert.deepEqual(checkPost({ ...ok, text: t }, ledger).fail, [], t);
+  }
+});
+
+test('「AI 사주」 금지 이유는 사실대로 적는다 — 「사람이 쓴다」가 아니라 「AI 초안 → 사람 검수 · 승인」', () => {
+  const r = checkPost({ ...ok, text: 'AI 사주로 봐 드려요' }, ledger);
+  const why = r.fail.find((f) => f.includes('AI 사주'));
+  assert.ok(why.includes('검수'), why);
+  assert.ok(!why.includes('사람이 쓴다'), why);
+});
+
 test('숫자 뽑기 — 쉼표를 뗀다', () => {
   assert.deepEqual(numbersIn('7,403개와 15,255개 · 5° · 60m'), ['7403', '15255', '5', '60']);
 });
