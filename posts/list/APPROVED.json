@@ -17,9 +17,12 @@
    "id": "L0002",
    "app": "yonghane",
    "files": {
-    "posts/list/L0002.json": "8ce0becbef614aabd72f46a166ea81dae91c01376d11c040a883704957f921b9",
-    "out/cards/list/L0002.jpg": "62d06f3b47a0c671fce5dbc8cb995361e16dbeb2cb734c609ff856bcff9d70d3"
-   }
+    "posts/list/L0002.json": "d7979e8b5da244f73321d9fafe20ee456dc5265871ec9e0fc14b597efef8669c",
+    "out/cards/list/L0002-toon1.jpg": "bffb76728549a202476a27a273d93d1d5da4ae623f1b1e8f1ff75f935889e525",
+    "out/cards/list/L0002-toon2.jpg": "b613740daeac89959d0a10eed6a3e45f432df50065f248c803910921d52fd1ab"
+   },
+   "approved_by": "사용자(채팅 「승인」 2026-11-14 — 웹툰 풀이 화면 두 장 판)",
+   "approved_at": "2026-11-14"
   }
  ]
 }
