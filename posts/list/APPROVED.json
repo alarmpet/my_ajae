@@ -27,30 +27,33 @@
   {
    "id": "L0017",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-15 — 「광고 없음」을 뺀 판)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0017.json": "c464fc25da08891b1a335b6936c2e81a355f7ec7de1d8b590f014955ffe51465",
-    "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "8696786d7ae0234d6b8e773a55b288f3b64a5b631c6a60f478cf5a98b9cfe149"
+    "posts/list/L0017.json": "6a199c1df596899fd0319e1bfc008a5f80c084de2881d24c65325b393677d11e",
+    "out/video/yh-intro-w47/yonghane-intro-w47.mp4": "ed27239ad4e6e30eb1791b364fcef664bceb5868642bd8e27c1c9ceea99b60c1"
    }
   },
   {
    "id": "L0018",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0018.json": "19bd9058fcf4db8d317e9afc02b03b471b30d7ed146419aec032172cdad01f5a",
-    "out/cards/list/L0018.jpg": "a55737805c548f9697784c7157549d3e6a479b6b5b6ef32fb0859d1a518a6c03"
+    "posts/list/L0018.json": "b4bb3770fd15f40816867e632ef7b3228c4419dde1be41301850cad4b8131a43",
+    "out/cards/list/L0018-1.jpg": "fd8ea18d601aa1456be7d190521410e2401824fcda5c07c27cfd70d65fb0a12c",
+    "out/cards/list/L0018-2.jpg": "f3c9949542e8938abee9887663b29102543e72959023bb415309bb8d8dc3cb2e",
+    "out/cards/list/L0018-3.jpg": "e36b57d6829fb87e52f3627580e1159d8aff44e5f0953693f70e18876f67c02f",
+    "out/cards/list/L0018-4.jpg": "2f3c113cb2c3f18166391dc6f2bbf42637d1019d41b466d9aa602a741fbb7808"
    }
   },
   {
    "id": "L0019",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0019.json": "17da14d66dbc01e9d4d91406a03f9b34d8ff652e69c0593be2f8e7ceefbfe2c7",
+    "posts/list/L0019.json": "2395694d91569e946c16f56b1e154d135a8d7e90479d2a90a8317fb99d381e83",
     "out/cards/list/L0019-1.jpg": "1163a3d85615a6682c12c119c6be242fb106b5e00be98464c31a505b2fcd0bf0",
     "out/cards/list/L0019-2.jpg": "80eb226efaab944ee7e73837996fb0cee4c126289ee0d68df47e1af4833a8f56",
     "out/cards/list/L0019-3.jpg": "20369e56ade5463543c32363427179012163c900eb0faa9cb822aa78bf2efec3"
@@ -59,33 +62,20 @@
   {
    "id": "L0020",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「세 개 다 승인」 2026-11-15)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0020.json": "6c5d84ea78da39341d274ae8f15eb7e58d069bcf9cafb7a72cf13d9982e457e9",
+    "posts/list/L0020.json": "924880fb46f52abc6e5956ea700a159b10874153739c3bce0063c1b1f5abb80e",
     "out/cards/list/L0020.jpg": "5da5d9da2a084771eec201e49142424b62a13546acbc437bcebb81eaa4ee76c6"
-   }
-  },
-  {
-   "id": "L0023",
-   "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
-   "files": {
-    "posts/list/L0023.json": "afd500351e7266f4988e56004c1625f2eb525dbe42b06260ab306824e93a1f73",
-    "out/cards/list/L0023-1.jpg": "fe242136e2e53e216d91522ce3a2298db1bf68fed6cef26585937c3a9bd3281f",
-    "out/cards/list/L0023-2.jpg": "7cdf4344752e6088bfbb8378e129d8d3779cffd74f2d52ddd104dacae874b5fe",
-    "out/cards/list/L0023-3.jpg": "4439dd8ddc97b5c926ecf33359a7d4b68a3f7a5df2e144a49eeb6f307ebb9593",
-    "out/cards/list/L0023-4.jpg": "70db6b41b09e31dc4d3501a95a09b7164e9c029c0e128ce28278a7365812f334"
    }
   },
   {
    "id": "L0021",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0021.json": "d883d025c5a03f681036f482469149b49cb98a9ba2c94e3a86093f237d5d210d",
+    "posts/list/L0021.json": "eefa4aec75a2a700a5f3543665ed13efe4865cb6349fbb127a839ec01d26979c",
     "out/cards/list/L0021-1.jpg": "f2961d680657f33c61b4165301b31427ca1951549735536b00e588961e060147",
     "out/cards/list/L0021-2.jpg": "6cc67396db70aeebd920d4ca7f18ede3cec45c514414b5ceb494c223cc98dc6c",
     "out/cards/list/L0021-3.jpg": "36302f4d1ae939b4b22283d9e7979c1b5f54ad288fdc7611c902c86c673dd90a",
@@ -95,10 +85,10 @@
   {
    "id": "L0022",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0022.json": "d2ca21d680e454a4c60472888e2cc271932e66a06652d6102e065b2609078d4a",
+    "posts/list/L0022.json": "9d4531a1015014f22b2cfe0c046c18a97473c79a7790a0eeecc869a4c0877a29",
     "out/cards/list/L0022-1.jpg": "0d284ccd7044430468ab37a68cf7625242732bdb5069f470cfd48db4a4cba0f2",
     "out/cards/list/L0022-2.jpg": "b540ba84419237ac3877e148274917aa2300ea0b6d13d07c6c76a8a82d008c11",
     "out/cards/list/L0022-3.jpg": "6d26d0ee976d69169da1130e0c81004fb9d83eaa0421ff2f1df7ba1210df81f6",
@@ -106,12 +96,25 @@
    }
   },
   {
+   "id": "L0023",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
+   "files": {
+    "posts/list/L0023.json": "fed5004e13bad775d122f6961f9674cb4f124ca0cd4a0863f046849c527861e9",
+    "out/cards/list/L0023-1.jpg": "fe242136e2e53e216d91522ce3a2298db1bf68fed6cef26585937c3a9bd3281f",
+    "out/cards/list/L0023-2.jpg": "7cdf4344752e6088bfbb8378e129d8d3779cffd74f2d52ddd104dacae874b5fe",
+    "out/cards/list/L0023-3.jpg": "4439dd8ddc97b5c926ecf33359a7d4b68a3f7a5df2e144a49eeb6f307ebb9593",
+    "out/cards/list/L0023-4.jpg": "70db6b41b09e31dc4d3501a95a09b7164e9c029c0e128ce28278a7365812f334"
+   }
+  },
+  {
    "id": "L0024",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0024.json": "154d01b5a6d3239403e8daef07eaaa97d22b4af3f3513dba409a0f5c6509b4ec",
+    "posts/list/L0024.json": "8657fe4720a40615c9dcc535230dc3fd89efffd4cf8fbea8bddf00fd56574aa2",
     "out/cards/list/L0024-1.jpg": "0308ee0ec8b50edf9afd1320918499f81d6a7a152881ffdb4969f250541bf7c6",
     "out/cards/list/L0024-2.jpg": "c2b33d95392fc4d114263082fa7fcc3ec2d02fd4f99f23059244bdd42b4f54dc",
     "out/cards/list/L0024-3.jpg": "69348ece7f6858b0fdb8a6e533667872bf5e37281434e898c6cc1c17036b8e56",
@@ -119,29 +122,29 @@
    }
   },
   {
-   "id": "L0026",
-   "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
-   "files": {
-    "posts/list/L0026.json": "269a2f499328452c6670ec492bb7bae861273c772470f162a77faccc1c0430b0",
-    "out/cards/list/L0026-1.jpg": "8c9b920b5470d0ca5149bbeab5df103d20a2b73a1f02b329a6cb9c022d5aad51",
-    "out/cards/list/L0026-2.jpg": "a8048663004333bdd7d7326d7795f9188fb40c7ad99713fa9120dbb738d77234",
-    "out/cards/list/L0026-3.jpg": "1be57f3430b062b6b2a031bcd75444748280f3ee3a04e2ed60dfd7ac144af83c",
-    "out/cards/list/L0026-4.jpg": "0d71a044605feca8a6fe824065d6f7321466acb71b90147931d8db9faed0aa77"
-   }
-  },
-  {
    "id": "L0025",
    "app": "yonghane",
-   "approved_by": "사용자(채팅 「승인」 2026-11-15 — 훅 카드 3판 · Flow 그림)",
-   "approved_at": "2026-11-15",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
    "files": {
-    "posts/list/L0025.json": "7c0a2954bd464111c03822563186afee449e4851cc665626d9d5f28e30c46609",
+    "posts/list/L0025.json": "80173cc310df1223ee3baa56dbec41dee9615a8e804b58ab7e012f4c0c3c5c30",
     "out/cards/list/L0025-1.jpg": "1e8cc4daa28b3e71effc9129eff22a82df5a15bf4987a591d9a9bc2faef9fcfd",
     "out/cards/list/L0025-2.jpg": "832df22c8161aa0a7df9de5a06b5487a04e23edc48bd7c93a1b4bd3f14a440d6",
     "out/cards/list/L0025-3.jpg": "6cbbc4d55918aefc2bd8e6c1fe531076eef87881495c0a00417102eb411fbecb",
     "out/cards/list/L0025-4.jpg": "f5a81d325ae7c3c55529f36d24385a3f00593430fab1c71e00a22c8c38e10e2f"
+   }
+  },
+  {
+   "id": "L0026",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-16 — 태그 붙인 판 · L0017/L0018 신년운세 판)",
+   "approved_at": "2026-11-16",
+   "files": {
+    "posts/list/L0026.json": "947f0d9403cbc0bd826dca2f1a52b5c245f663ffe84ade40160e75fbe647e403",
+    "out/cards/list/L0026-1.jpg": "8c9b920b5470d0ca5149bbeab5df103d20a2b73a1f02b329a6cb9c022d5aad51",
+    "out/cards/list/L0026-2.jpg": "a8048663004333bdd7d7326d7795f9188fb40c7ad99713fa9120dbb738d77234",
+    "out/cards/list/L0026-3.jpg": "1be57f3430b062b6b2a031bcd75444748280f3ee3a04e2ed60dfd7ac144af83c",
+    "out/cards/list/L0026-4.jpg": "0d71a044605feca8a6fe824065d6f7321466acb71b90147931d8db9faed0aa77"
    }
   }
  ]
