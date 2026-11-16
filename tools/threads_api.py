@@ -164,15 +164,25 @@ def publish(pid):
             k = f"my_ajae/{pid}/{stamp}/{f.name}"
             urls.append(upload(s3, f, k))
             keys.append(k)
+        # 주제 태그(2026-11-16): 공식 문서 topic_tag — 글 하나에 하나, 1~50자, 마침표 · & 금지. 팔로워 없는 계정이 주제 피드 · 검색에 걸리는 길.
+        # 컨테이너를 만들 때만 붙는다(아직 올라가지 않은 단계) — 거절되면 태그 없이 한 번 더 만든다. 중복 게시는 생기지 않는다.
+        tag = (post.get("topic_tag") or "").strip().lstrip("#")
+        def make(**kw):
+            if tag:
+                try:
+                    return api("POST", f"{uid}/threads", topic_tag=tag, **kw)["id"]
+                except SystemExit as e:
+                    print(f"{pid} 주제 태그 거절 — 태그 없이 만든다: {str(e)[:120]}", flush=True)
+            return api("POST", f"{uid}/threads", **kw)["id"]
         if kind == "VIDEO":
-            cid = api("POST", f"{uid}/threads", media_type="VIDEO", video_url=urls[0], text=text)["id"]
+            cid = make(media_type="VIDEO", video_url=urls[0], text=text)
         elif kind == "IMAGE":
-            cid = api("POST", f"{uid}/threads", media_type="IMAGE", image_url=urls[0], text=text)["id"]
+            cid = make(media_type="IMAGE", image_url=urls[0], text=text)
         else:
             kids = [api("POST", f"{uid}/threads", media_type="IMAGE", image_url=u, is_carousel_item="true")["id"] for u in urls]
             for k in kids:
                 wait_ready(k)
-            cid = api("POST", f"{uid}/threads", media_type="CAROUSEL", children=",".join(kids), text=text)["id"]
+            cid = make(media_type="CAROUSEL", children=",".join(kids), text=text)
         wait_ready(cid)
         mid = publish_container(uid, cid, text)
         info = api("GET", mid, fields="id,permalink,timestamp,media_type")

@@ -70,6 +70,8 @@ def publish(pid):
                             for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()):
         raise SystemExit(f"{pid} 는 이미 인스타에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
     cap = ((post.get("variants") or {}).get("instagram") or post["text"]).strip()
+    if post.get("hashtags"):  # 2026-11-16 — 인스타는 해시태그가 검색 · 탐색에 걸리는 길. 캡션 끝에 한 줄로.
+        cap += "\n\n" + " ".join("#" + h.lstrip("#") for h in post["hashtags"])
     if len(cap) > MAX_CAPTION:
         raise SystemExit(f"캡션 {len(cap)}자 > {MAX_CAPTION}")
     extra = {"is_ai_generated": "true"} if post.get("ai_label") else {}

@@ -125,3 +125,9 @@ test('「광고 없음」은 실패한다 — 광고는 할 계획이다(2026-11
   }
   assert.deepEqual(checkPost({ ...ok, text: '다른 앱에는 광고 포함 표시가 있었습니다' }, ledger).fail, []);
 });
+
+test('해시태그 · 주제 태그의 금지 표현도 잡는다', () => {
+  const r = checkPost({ ...ok, hashtags: ['사주', 'AI사주'] }, ledger);
+  assert.ok(r.fail.some((f) => f.startsWith('금지 표현')));
+});
+

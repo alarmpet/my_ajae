@@ -78,7 +78,11 @@ def show(pid):
         out.append(t)
     if post.get("first_comment"):
         out += ["--- 첫 댓글 ---", post["first_comment"]]
-    out += [f"--- 카드: {post.get('image') or '(없음)'} ---", "=" * 40]
+    if post.get("topic_tag"):
+        out.append(f"--- 스레드 주제 태그: {post['topic_tag']} ---")
+    if post.get("hashtags"):
+        out.append("--- 인스타 해시태그(캡션 끝): " + " ".join("#" + h.lstrip("#") for h in post["hashtags"]) + " ---")
+    out += [f"--- 카드: {post.get('image') or post.get('video') or '(없음)'} ---", "=" * 40]
     return "\n".join(out)
 
 

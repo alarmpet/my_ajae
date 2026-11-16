@@ -72,7 +72,9 @@ export function checkPost(post, ledger) {
   const hold = [];
   // 플랫폼별 글(variants: { instagram, x, … })도 같은 규칙으로 검사한다
   const variants = post.variants && typeof post.variants === 'object' ? Object.values(post.variants) : [];
-  const body = [post.text ?? '', post.card ?? '', ...variants].join('\n');
+  // 2026-11-16 — 주제 태그 · 해시태그 · 첫 댓글도 화면에 나가는 글자다(「#AI사주풀이」가 검사를 빠져나갔다)
+  const tags = [post.topic_tag ?? '', ...(post.hashtags ?? [])]; // 첫 댓글은 주소를 두는 자리라(사용자 2026-11-14) 여기 넣지 않는다
+  const body = [post.text ?? '', post.card ?? '', ...variants, ...tags].join('\n');
   if (!post.text || !String(post.text).trim()) fail.push('본문이 비었다');
   for (const [re, why] of BANNED) if (re.test(body)) fail.push(`금지 표현: ${why}`);
   if (URL_RE.test(body)) fail.push('본문에 주소가 있다 — 주소는 프로필 링크 하나에만');
