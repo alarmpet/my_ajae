@@ -40,10 +40,10 @@ def log(msg):
     with LOGF.open("a", encoding="utf-8", newline="\n") as fh:
         fh.write(line + "\n")
     # 2026-11-18 — 확인 필요 · 실패 · 보류 · 게시 완료는 알림으로도 보낸다. 알림 실패는 게시를 막지 않는다.
-    # 슬랙(폰 알림 · 사용자 「슬랙으로 가자」)이 주 통로, Buzz myajae 채널은 PC 쪽 보조.
+    # 슬랙(폰 알림 · 사용자 「슬랙으로 가자」)만. Buzz 는 쓰지 않는다(사용자 2026-11-18 「이건 사용 안 할 거야」).
     if msg.startswith(("OK ", "FAIL ", "HOLD ", "확인 필요 ")) and "--dry" not in sys.argv:
         icon = {"OK": "✅", "FAIL": "❌", "HOLD": "⏸️", "확인": "🙋"}[msg.split()[0]]
-        for mod in ("slack_notify", "buzz_notify"):
+        for mod in ("slack_notify",):
             try:
                 __import__(mod).notify(f"{icon} {msg}")
             except Exception as e:  # noqa: BLE001
