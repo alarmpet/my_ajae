@@ -39,6 +39,14 @@ def log(msg):
     print(line, flush=True)
     with LOGF.open("a", encoding="utf-8", newline="\n") as fh:
         fh.write(line + "\n")
+    # 2026-11-18 — 확인 필요 · 실패 · 게시 완료는 Buzz myajae 채널로도(tools/buzz_notify.py). 알림 실패는 게시를 막지 않는다.
+    if msg.startswith(("OK ", "FAIL ", "HOLD ", "확인 필요 ")) and "--dry" not in sys.argv:
+        try:
+            import buzz_notify
+            icon = {"OK": "✅", "FAIL": "❌", "HOLD": "⏸️", "확인": "🙋"}[msg.split()[0]]
+            buzz_notify.notify(f"{icon} {msg}")
+        except Exception as e:  # noqa: BLE001
+            print(f"Buzz 알림 건너뜀: {e}", flush=True)
 
 
 def arg(name, default=None):
