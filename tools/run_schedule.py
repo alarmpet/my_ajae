@@ -96,7 +96,7 @@ def run_slot(s, pid, dry, date):
              "instagram": (ig_api.publish, ig_api.first_comment)}
     post = threads_api.verify(pid)  # 지문이 다르면 여기서 멈춘다
     fails = 0
-    for plat in s["platforms"]:
+    for plat in post.get("platforms") or s["platforms"]:  # 게시물이 정하면 그곳에만(2026-11-17 — 짧은 글은 스레드만)
         if dry:
             log(f"[dry] {pid} {plat} 지문 일치 — 게시 안 함")
             continue

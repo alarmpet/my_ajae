@@ -155,7 +155,7 @@ def publish(pid):
         raise SystemExit(f"{pid} 는 이미 스레드에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
     parts = split_text(post["text"].strip())
     text = parts[0]
-    kind, files = media_of(post)
+    kind, files = ("TEXT", []) if post.get("text_only") else media_of(post)  # 2026-11-17 — 짧은 도발 글은 그림 없이
     s3 = r2()
     stamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     keys, urls = [], []
@@ -174,7 +174,9 @@ def publish(pid):
                 except SystemExit as e:
                     print(f"{pid} 주제 태그 거절 — 태그 없이 만든다: {str(e)[:120]}", flush=True)
             return api("POST", f"{uid}/threads", **kw)["id"]
-        if kind == "VIDEO":
+        if kind == "TEXT":
+            cid = make(media_type="TEXT", text=text)
+        elif kind == "VIDEO":
             cid = make(media_type="VIDEO", video_url=urls[0], text=text)
         elif kind == "IMAGE":
             cid = make(media_type="IMAGE", image_url=urls[0], text=text)
