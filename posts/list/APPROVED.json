@@ -146,6 +146,15 @@
     "out/cards/list/L0026-3.jpg": "1be57f3430b062b6b2a031bcd75444748280f3ee3a04e2ed60dfd7ac144af83c",
     "out/cards/list/L0026-4.jpg": "0d71a044605feca8a6fe824065d6f7321466acb71b90147931d8db9faed0aa77"
    }
+  },
+  {
+   "id": "L0027",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「승인, 올려」 2026-11-17 — 짧은 도발 글 · 스레드만)",
+   "approved_at": "2026-11-17",
+   "files": {
+    "posts/list/L0027.json": "275471e7544920b9e8f82c6cd3dda1ed86a1497083c381a615d13dd82bed57bb"
+   }
   }
  ]
 }
