@@ -18,7 +18,7 @@
 - 용하네 쪽 홍보 작업(방문 측정 · 공유 카드 PNG · 색인 요청)은 그 저장소에서 끝났다. 여기서는 다루지 않는다.
 
 ## 2026-11-18 — 에이전트 팀 운영 계획
-- `docs/plans/2026-11-18-agent-team-plan.md`(codex · grok · agy 설계 라운드, 인용 대조). Buzz 는 쓰지 않는다(사용자). 사용자 결정 대기: `D:\ops` 시작 · 아침 점검 시각 · 작업 스케줄러 등록.
+- `docs/plans/2026-11-18-agent-team-plan.md`(codex · grok · agy 설계 라운드, 인용 대조). Buzz 는 쓰지 않는다(사용자). 이번 주 진행: 용하네 · 보카라이더 / 대기: 체스 · auto-cf. `D:\ops`(목록 · 아침 한 장 · 교훈 카드) 시작함 — 매일 07:30 슬랙 [고름]. **사용자 몫: 작업 스케줄러 등록**(`D:\ops	oolsegister_morning.ps1`).
 
 ## 2026-11-18 새벽 — 슬랙 알림(주 통로) · Buzz(보조)
 - 슬랙 워크스페이스 sub-company · 앱 `my-ajae alerts`(권한 incoming-webhook 하나) · 채널 `#새-채널`. 웹훅은 자격 증명 관리자 `my_ajae/slack-webhook`(화면 · 대화에 출력하지 않고 바로 저장). 시험 메시지 「ok」 응답. 무료 플랜 — 비용 없음(기록 90일 · 앱 10개).
