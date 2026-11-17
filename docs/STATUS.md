@@ -19,6 +19,7 @@
 
 ## 2026-11-18 새벽 — 슬랙 알림(주 통로) · Buzz(보조)
 - 슬랙 워크스페이스 sub-company · 앱 `my-ajae alerts`(권한 incoming-webhook 하나) · 채널 `#새-채널`. 웹훅은 자격 증명 관리자 `my_ajae/slack-webhook`(화면 · 대화에 출력하지 않고 바로 저장). 시험 메시지 「ok」 응답. 무료 플랜 — 비용 없음(기록 90일 · 앱 10개).
+- **폰 도착 확인(11-18 02:5x, adb 로 폰 알림 목록에서 「#새-채널: my-ajae alerts(봇) — @channel 🔔 [시험 5]」를 읽음).** 앞의 네 번은 안 왔다: ① 새 채널 기본이 「멘션만」 → `@channel` 붙임 ② 슬랙 알림 「일시 중지」 → 사용자가 풂 ③ PC 에서 슬랙 웹을 열어 두면 폰 푸시를 미룬다 → 창을 닫자 왔다. 게시 시각에 PC 에서 슬랙을 열어 두면 폰에 늦게 올 수 있다.
 - `run_schedule.py` 가 ✅ 완료 · ❌ 실패 · ⏸️ 보류 · 🙋 확인 필요를 슬랙 → Buzz 순으로 보낸다. 텔레그램 도구(`tools/telegram_notify.py`)는 토큰 없이 대기.
 - 예약 도구(`tools/run_schedule.py`)가 게시 완료 · 실패 · 보류 · 확인 필요를 Buzz `myajae` 채널로도 보낸다(`tools/buzz_notify.py`). 키는 자격 증명 관리자 `my_ajae/buzz-key`(사용자가 넣음), 채널은 `.env` 의 `BUZZ_CHANNEL`. 알림이 실패해도 게시는 막지 않는다.
 - 시험: 메시지 두 통(직접 · 예약 도구 경유)을 보냈고 채널에서 다시 읽어 확인했다. **폰 도착은 재 보지 않았다** — 중계 서버 설정이 `BUZZ_PUSH_ENABLED=false`(푸시 중계는 아이폰 APNs 용 하나뿐).
