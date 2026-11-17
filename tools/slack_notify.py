@@ -37,8 +37,10 @@ def send(text):
 
 
 def notify(text):
+    # 2026-11-18 — 새 채널 기본 알림은 「멘션만」이라 일반 메시지는 폰이 울리지 않았다(사용자 「안 왔어」).
+    # 혼자 쓰는 알림 채널이라 @channel 로 멘션을 붙인다.
     try:
-        return send(text)
+        return send("<!channel> " + text)
     except (SystemExit, Exception) as e:  # noqa: BLE001
         print(f"슬랙 알림 실패: {str(e)[:200]}", flush=True)
         return False
