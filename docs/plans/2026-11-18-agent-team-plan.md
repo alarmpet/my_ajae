@@ -89,8 +89,8 @@
 ### 7-1. 진척 (2026-11-18 새벽, 사용자 「끝까지 진행해놔」)
 - [x] `D:\ops` — `CATALOG.md` · `catalog.json`(경로만 · 이번 주 진행 칸) · 로컬 git(원격 없음)
 - [x] 아침 한 장 `D:\ops\tools\morning.py` — 다섯 저장소 읽기만(원격 받아오기 · `git show`) · 모델 호출 0 · 인계 「첫 행동」에 인계 날짜를 붙인다. 멘션 없이 슬랙 시험 1회 보냄
-- [x] 매일 07:30 대기 시작(이 세션 백그라운드, 11-25 까지). **재부팅하면 끊긴다** → 아래 등록이 필요
-- [ ] **작업 스케줄러 등록(사용자 1회)**: `powershell -ExecutionPolicy Bypass -File D:\ops\tools\register_morning.ps1` — 매일 07:30 아침 한 장 + 로그인 때 게시 예약 대기
+- [x] 매일 07:30 대기 시작(이 세션 백그라운드) → 작업 스케줄러로 옮김(아래)
+- [x] **작업 스케줄러 등록**(11-18 사용자 「둘 다 해」): `ops-morning` 매일 07:30 · `my_ajae-posts` 로그인 때. 세션 안 07:30 대기는 겹치지 않게 껐다
 - [ ] 재부팅 시험(11-22) · `[고름]` 답으로 담당에게 넘기기(11-23) — 사용자와 함께
 - [x] 교훈 카드 첫 적재 `D:\ops\tools\lessons.py` — 용하네 7 · 보카라이더 27(README 제외) = 34장. 「같은 체크아웃 동시 빌드」 검색 → 보카라이더 `concurrent-build-dist-collision` **1위**
 - [ ] 첫 주 결산(11-25)
@@ -125,3 +125,77 @@
 2. **아침 점검 시각**(제안 07:30)과 「답 필요 하루 3개」 상한.
 3. **작업 스케줄러 등록**(11-21, 관리자 창에서 직접 — 등록 명령은 준비해 둔다).
 4. auto-cf 에 「지금 할 일」 파일이 없다 — auto-cf 담당 세션에서 만들지(그 저장소의 일).
+
+## 13. AWS Emulator 검토 — 도구는 보류, 만든 방식은 가져온다 (2026-11-18)
+
+사용자가 가져온 소개 글을 ego-browser 로 공식 원문과 대조했다. 원문 · 확인 범위는 13-5.
+
+### 13-1. 결론
+- **AWS Emulator 자체는 지금 들이지 않는다.** 우리 다섯 저장소 어느 것도 AWS 서비스를 쓰지 않는다(13-3). 앱이 AWS 를 쓰기 시작하면 그때 다시 본다.
+- **AWS 가 이 도구를 만든 방식(에이전트 세 팀 + 합치기 전 문)은 이 계획의 규칙으로 가져온다**(13-4). 비용이 들지 않고, 지금 우리 팀 구조에 그대로 맞는다.
+- 「로컬에서 진짜처럼 시험하기」가 실제로 필요한 곳은 AWS 가 아니라 **보카라이더의 수파베이스 마이그레이션**이다. 이건 보카라이더 담당에게 넘길 제안으로만 적는다(13-3 · my_ajae 는 다른 저장소를 고치지 않는다).
+
+### 13-2. 붙여 준 글 — 문장별 대조
+| 글의 주장 | 판정 | 원문에서 확인한 것 |
+|---|---|---|
+| AWS 가 공식 `aws-emulator` 스킬을 준다 · 설치 명령 · AWS CLI 2.35.0 이상 | **맞음** | 깃허브 README: `aws agent-toolkit add-skill --skill-name aws-emulator --region us-east-1`, 「AWS CLI version 2.35.0 or later」 |
+| 설치 · 실행 · 오류 수정 · 호환성 확인을 돕는다 | 대체로 맞음 | 문서 목차에 「With an AI coding agent」 · 「Checking your project」가 있다. 스킬 파일 안은 읽지 않았다 |
+| Claude Code · Kiro · Cursor 가 예시로 나온다 | 맞음 | AWS 블로그는 Kiro · Claude Code 를 든다. 에이전트 도구 모음 README 는 Claude Code · Codex · Cursor · Devin · Kiro 를 든다 |
+| Codex 자동 설치는 따로 확인해야 한다 | **반만 맞음** | 도구 모음 README: Codex 는 `codex plugin marketplace add aws/agent-toolkit-for-aws` 뒤 `aws-core` 플러그인을 설치한다. 그 안에 에뮬레이터 스킬이 드는지는 **미확인** |
+| 종료하면 메모리의 모의 리소스가 사라진다 | **원문 문장을 못 찾음** | 서비스마다 메모리 상태(`state.rs` — 「in-memory state」)를 두고, 도커 실행 예가 `--rm` 이라 그럴 가능성은 높다. 공식 문장으로는 확인하지 못했다 |
+| IAM 보안 정책을 실제처럼 검증하지 않는다 | **맞음** | AWS 블로그: 「doesn't evaluate … IAM policies … the way AWS does, so a request that AWS denies might succeed」. 계정 하나로만 돌고, 계정 간 · 리전 간 동작도 없다 |
+| GPU · 대규모 컴퓨팅을 주는 도구가 아니다 | 원문 문장을 못 찾음 | 「API 를 흉내 내는 로컬 프로그램」이라는 설명과는 맞는다 |
+| 무료다 | 맞음 | 「no additional service fee」. 라이선스 CC0(공공 영역). `vendor/` 의 남의 코드만 Apache-2.0(InfoQ) |
+| 윈도우는 도커로 설치한다 | 맞음 · 덧붙일 것 | 윈도우 · 맥은 도커로 돌린다. **완성된 이미지를 주지 않아서** 문서의 짧은 Dockerfile 로 직접 만든다. 실행 예는 메모리 2GB, `127.0.0.1:9297` HTTPS(자체 서명 인증서) |
+| 수천 개 에이전트가 만들었다 · 테스트 작성 / 문제 탐색 / 코드 수정 세 팀 | **맞음** | aboutamazon 글: 「three teams of agents. One team manages a test suite; one team finds issues…; and one team fixes those issues」 |
+| 실제 서비스를 공개하려면 따로 백엔드가 필요하다 | 맞음 | README: 「Don't use it for production workloads or to test security」 |
+
+글에 없던 사실:
+- 2026-11-11 출시. 438개 API 모델 · 200개 넘는 서비스를 다룬다.
+- 아직 안 되는 기능은 HTTP 501 `NotImplemented` 를 돌려준다.
+- 서비스마다 「진짜 AWS 와 같은지」 점수를 공개한다. 만들기 · 조회 · 삭제 같은 관리 API 가 가장 비슷하다.
+- InfoQ 기사 독자 댓글의 셈으로는 S3 · DynamoDB · SQS 가 약 3분의 2를 통과한다. 우리가 직접 센 값은 아니다.
+
+### 13-3. 우리 저장소에 맞춰 보니
+조사 범위: `git grep`, 용하네 · 보카라이더는 `origin/main`, 나머지는 `HEAD`.
+
+| 저장소 | AWS SDK | 실제로 쓰는 것 | AWS Emulator |
+|---|---|---|---|
+| 용하네 | 0 | 수파베이스 · 버셀 | 해당 없음 |
+| 보카라이더 | 0 | 수파베이스(`supabase/migrations/*.sql` 6개 — 랭킹 · 초대 보상) · 버셀 | 해당 없음 |
+| 와일드 크라운 | 0 | 수파베이스(문서 언급 위주 · 미확인) | 해당 없음 |
+| auto-cf · my_ajae | `boto3` 있음 | **AWS 가 아니라 Cloudflare R2**(S3 호환). 카드 그림을 올리고 공개 주소를 만들어 인스타 · 스레드에 넘긴다(`my_ajae/tools/threads_api.py` 의 `r2()` · `upload()`) | **들이지 않는다.** 여기서 깨지는 곳은 「메타 서버가 공개 주소를 받아 가는 단계」다. 내 PC 안의 에뮬레이터 주소(`127.0.0.1`)는 메타가 가져갈 수 없으니 시험이 안 된다. R2 와 AWS S3 가 같은지도 따로 재야 한다 |
+
+**보카라이더에 넘길 제안**(보카라이더 담당이 판단 · 여기서는 고치지 않음):
+- 운영 DB 에 넣기 전에 마이그레이션을 내 PC 에서 먼저 돌려 보는 방법이 수파베이스에 공식으로 있다.
+  - `supabase start`: 포스트그레스 · 인증 · 저장소를 도커로 띄운다.
+  - pgTAP 시험은 `supabase test db` 로 돌린다.
+- 지금 보카라이더 `origin/main` 에는 `supabase/config.toml` 이 없다. 마이그레이션을 어떻게 시험하는지는 **미확인**이다. 담당이 먼저 확인한다.
+- 주의할 것(수파베이스 공식 문서):
+  - 기본 포트로는 PC 한 대에 프로젝트 하나만 돌릴 수 있다.
+  - `supabase stop --no-backup` 은 로컬 데이터를 지운다.
+- 이 PC 의 사정:
+  - 도커 데스크톱은 11-18 사용자 지시로 꺼 두었다.
+  - C: 여유가 적어 도커 디스크 위치를 먼저 확인해야 한다.
+
+### 13-4. 가져올 것 — 「세 팀 + 문」을 우리 크기로
+AWS 원문의 구조와 우리가 바꿔 쓸 모양이다. 사람 수 · 에이전트 수는 따라 하지 않는다. AWS 는 수백 개를 동시에 돌리고, 우리는 사람 하나에 하루 15분이다.
+
+| AWS 가 한 것(원문) | 우리 규칙 | 어디에 |
+|---|---|---|
+| 시험 팀: 시험을 **진짜 AWS 에 먼저 대 보고** 통과한 것만 올린다. 「모호하지 않은 목표」가 된다 | **고치기 전에 「틀렸다」를 보여 주는 시험부터.** 그 시험이 지금 운영본에서 실제로 실패하는 것을 먼저 확인한다. 운영을 읽기만 하는 검사가 있으면 그걸로 잰다(예: 보카라이더 `healthcheck.yml`). 실패를 못 보인 시험은 목표로 쓰지 않는다 | 각 담당 · 인계 형식의 「검사와 종료 코드」 |
+| 탐색 팀: 실패를 **원인이 같을 법한 것끼리 묶어** 이슈 하나로 | 리뷰 라운드 결과를 할 일 파일에 옮길 때 **원인별로 묶는다.** 증상 열 개가 할 일 열 개가 되지 않게 한다 | tri-agent-review 결과 → 각 저장소 `TASK.md` |
+| 수정 팀: **에이전트 하나 = 이슈 하나.** 「경계가 있는 일에서 더 잘 해낸다」 | **세션 하나 = 문제 하나.** 「한 저장소 = 담당 하나」에 더한다. 아침 `[고름]` 의 A / B 도 문제 하나 단위로 고른다 | 이 계획 §2 |
+| 합치기 전 문: 빌드 · 코딩 규칙 검토 · 보안 · 「점수가 떨어지지 않았나」. 하나라도 실패하면 되돌려 보낸다 | **이미 있는 검사 명령**(`catalog.json` 의 `check`)이 문이다. 큰 변경에만 세 모델 검토를 붙인다. 새 검토 에이전트는 만들지 않는다 | `D:\ops\catalog.json` |
+| 못 하는 것은 `issues/things-that-do-not-work/`, 고쳐지면 `things-that-now-work/` 로 옮긴다 | **아직 안 되는 것 / 이제 되는 것을 파일로 남기는 방식**을 각 담당에게 제안한다. 아침 점검이 두 폴더의 개수만 세어 「이번 주 n개 고침」을 보여 줄 수 있다. 폴더를 만들지는 각 저장소가 정한다 | 제안 · `morning.py` 는 폴더가 있으면 센다(나중) |
+| 에이전트가 파이썬 인터프리터를 직접 만들어 버린 일 → 「있는 라이브러리를 써라」 지침 | **바퀴를 새로 만들지 않는다.** 새 도구를 짜기 전에 교훈 카드 · 공식 도구부터 찾는다(오늘 슬랙 계획도 그렇게 했다) | 각 담당 공통 |
+| 보안 담당 에이전트가 변경을 적대적으로 다시 본다 | 지금 규칙 그대로 둔다 — 비밀값은 자격 증명 관리자 · 공개 저장소 검사. 추가하지 않는다 | — |
+
+### 13-5. 출처 (ego-browser 로 2026-11-18 읽음)
+- 깃허브 README: https://github.com/aws/aws-emulator (CC0-1.0 · 커밋 3만 5천여 개 · 스타 9.2k · 마지막 커밋 작성자 `IssueFixerAgent`)
+- 사용자 안내 문서: https://docs.aws.amazon.com/emulator/ · 시작하기 `…/userguide/getting-started.html` · 도커 `…/userguide/getting-started-docker.html`
+- AWS 블로그(출시 · 제한 · 보안): https://aws.amazon.com/blogs/aws/test-your-applications-against-aws-locally-with-aws-emulator/
+- 만든 방식: https://www.aboutamazon.com/news/aws/how-autonomous-ai-agents-built-aws-emulator
+- 에이전트 도구 모음: https://github.com/aws/agent-toolkit-for-aws
+- InfoQ(라이선스 · 다른 도구와 비교 · 독자 셈): https://www.infoq.com/news/2026/11/aws-emulator-agents/
+- 수파베이스 로컬 개발: https://supabase.com/docs/guides/local-development/cli/getting-started · DB 시험: https://supabase.com/docs/guides/database/testing
