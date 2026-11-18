@@ -43,4 +43,4 @@
 | 목적 | 명령 |
 |---|---|
 | 게시물 검사 | `node tools/check_post.mjs posts/<파일>.json` |
-| 검사의 시험 | `node --test tools/check_post.test.mjs` (Node 22 는 폴더 경로 `tools/` 를 받지 못한다) |
+| 검사의 시험 | `node --test tools/check_post.test.mjs tools/check_post.sabotage.test.mjs` (Node 22 는 폴더 경로 `tools/` 를 받지 못한다) |

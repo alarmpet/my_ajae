@@ -9,6 +9,7 @@
  *   node tools/check_post.mjs posts/P0001.json [더 많은 파일…]
  */
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -42,6 +43,36 @@ export const BANNED = [
 // (예전 보류 목록: 미끼 질문 · 판에 박힌 발표 문구 · 교훈 틀 · 「꿀팁 · 대박」 — ECC 에서 옮겼던 것, 걷음)
 export const HOLD = [];
 
+/**
+ * 용하네의 금지 문구 정책을 운영본에서 읽는다(베껴 적지 않는다 — 계획 docs/plans/2026-11-18-cross-project-assets-plan.md §4-2).
+ * 용하네가 정책을 고치면 용하네 홍보 글 검사가 따라간다. app 이 yonghane 인 글에만 건다.
+ * 아래 목록에 없는 규칙(코드용 규칙 · 새로 생긴 규칙)은 걸지 않고 「새 규칙」으로만 알린다.
+ */
+export const YONGHANE_RULES = ['absolute-accuracy', 'deterministic-fate', 'authority-borrowing', 'authenticity-claim',
+  'medical', 'financial', 'legal-hiring', 'prayer-direction'];
+/** 글에는 맞지 않아 걸지 않기로 한 규칙(코드 · 화면 표기용) */
+export const YONGHANE_SKIP = ['verified-claim-copy', 'korean-bracket-particle', 'lunar-month-by-solar', 'self-report-assignment'];
+
+/** @returns {{ rules: {id:string, re:RegExp, why:string}[], unknown: string[], error?: string }} */
+export function loadYonghanePolicy(repo = process.env.YONGHANE_REPO || 'D:/FORTUNE_FUSION', ref = 'origin/main') {
+  try {
+    const raw = execFileSync('git', ['-C', repo, 'show', `${ref}:data/claim-policy.json`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return parseYonghanePolicy(JSON.parse(raw));
+  } catch (e) {
+    return { rules: [], unknown: [], error: `용하네 정책을 읽지 못했다(${repo} ${ref})` };
+  }
+}
+
+export function parseYonghanePolicy(policy) {
+  const rules = [];
+  const unknown = [];
+  for (const r of policy.rules ?? []) {
+    if (YONGHANE_RULES.includes(r.id)) rules.push({ id: r.id, re: new RegExp(r.pattern, 'u'), why: r.reason });
+    else if (!YONGHANE_SKIP.includes(r.id)) unknown.push(r.id);
+  }
+  return { rules, unknown };
+}
+
 const URL_RE = /https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|io|app|dev|kr|co)\b/i;
 
 /** 글의 숫자 — 쉼표를 뗀 정수 · 소수. 날짜처럼 보이는 1~2자리 단독 숫자도 센다(근거에 있어야 한다). */
@@ -67,7 +98,7 @@ export function loadLedger(file = path.join(ROOT, 'ledger', 'events.jsonl')) {
 }
 
 /** @returns {{ fail: string[], hold: string[] }} */
-export function checkPost(post, ledger) {
+export function checkPost(post, ledger, yonghane = null) {
   const fail = [];
   const hold = [];
   // 플랫폼별 글(variants: { instagram, x, … })도 같은 규칙으로 검사한다
@@ -77,6 +108,10 @@ export function checkPost(post, ledger) {
   const body = [post.text ?? '', post.card ?? '', ...variants, ...tags].join('\n');
   if (!post.text || !String(post.text).trim()) fail.push('본문이 비었다');
   for (const [re, why] of BANNED) if (re.test(body)) fail.push(`금지 표현: ${why}`);
+  if (post.app === 'yonghane' && yonghane) {
+    for (const r of yonghane.rules) if (r.re.test(body)) fail.push(`금지 표현(용하네 정책 ${r.id}): ${r.why}`);
+    if (yonghane.error) hold.push(`${yonghane.error} — 용하네 금지 문구는 검사하지 못했다`);
+  }
   if (URL_RE.test(body)) fail.push('본문에 주소가 있다 — 주소는 프로필 링크 하나에만');
   const ids = Array.isArray(post.ledger) ? post.ledger : [];
   if (ids.length === 0) fail.push('장부 ID 가 없다 — 사실은 장부에 있는 것만 쓴다');
@@ -105,10 +140,12 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const files = process.argv.slice(2);
   if (files.length === 0) { console.error('사용법: node tools/check_post.mjs posts/<파일>.json …'); process.exit(2); }
   const ledger = loadLedger();
+  const yonghane = loadYonghanePolicy();
+  if (yonghane.unknown.length) console.log(`알림: 용하네 정책에 처음 보는 규칙 ${yonghane.unknown.join(', ')} — 글에도 걸지 정한다(YONGHANE_RULES / YONGHANE_SKIP)`);
   let bad = 0;
   for (const f of files) {
     const post = JSON.parse(readFileSync(f, 'utf8'));
-    const { fail, hold } = checkPost(post, ledger);
+    const { fail, hold } = checkPost(post, ledger, yonghane);
     if (fail.length) { bad++; console.log(`FAIL ${f}\n  - ${fail.join('\n  - ')}`); }
     else console.log(`${hold.length ? 'HOLD' : 'PASS'} ${f}${hold.length ? `\n  - ${hold.join('\n  - ')}` : ''}`);
   }
