@@ -22,7 +22,7 @@
 - 슬랙 운영 계획 `docs/plans/2026-11-18-slack-solo-team-plan.md`(ego-browser 로 공식 문서 조사): 채널 다섯 · 폰은 `#0-고름` 만 · [고름] 버튼(Socket Mode) · PC 멈춤 감지(예약 메시지). **사용자 몫: 폰 알림 설정 5분(§3) · 1단계 「진행」 여부.** 「올려」 버튼은 보류.
 - AWS Emulator 검토(11-18, 팀 계획 §13): 도구는 보류(다섯 저장소 모두 AWS 안 씀 · my_ajae/auto-cf 의 `boto3` 는 R2). 「세 팀 + 합치기 전 문」 방식은 규칙으로 가져옴. **보카라이더 담당에게 넘길 제안: 수파베이스 마이그레이션 로컬 시험(`supabase start` · `supabase test db`).**
 - 자산 공유 계획 `docs/plans/2026-11-18-cross-project-assets-plan.md`(다섯 저장소 현황 · 여러 벌인 것 · 서로 넘길 것). 방법: 복사 말고 「찾을 수 있게(자산 색인) + 가리키게」. 1~3단계 완료(11-18 — 자산 색인 588장 `D:/ops/tools/assets.py` · 짝 알림 · 용하네 정책 읽기 + 깨 보기 시험). **사용자 몫: 공용으로 올릴 스킬 · auto-cf 원격(백업) 결정.**
-egister_morning.ps1`).
+- **C: 정리(11-18 밤, 사용자 지시)로 auto-cf 도구 둘이 끊겼다 — auto-cf 담당에게 넘길 것.** `D:/auto-cf/config/tools.json` 의 `paddleocr`(파이썬: `C:/Users/petbl/Claude/Projects/coupang/…/.venv-paddleocr`)와 `vsr`(파이썬: `C:/Users/petbl/video-subtitle-remover/videoEnv`)가 가리키던 가상환경을 지웠다(설정을 확인하기 전에 지웠다). 모델 캐시 `.paddlex` · `.rembg` · `.cache/torch` 도 지웠다(다시 받는다). 다시 쓰려면 D: 에 가상환경을 새로 만들고 경로를 고친다. `wangp`(`%LOCALAPPDATA%/WanGP/venv-12.51-py311`)와 `comfyui` 는 남겼다 — 지우지 말 것. `C:/pinokio` 는 `D:/pinokio` 로 가는 연결이라 지우면 안 된다.
 
 ## 2026-11-18 새벽 — 슬랙 알림(주 통로) · Buzz(보조)
 - 슬랙 워크스페이스 sub-company · 앱 `my-ajae alerts`(권한 incoming-webhook 하나) · 채널 `#새-채널`. 웹훅은 자격 증명 관리자 `my_ajae/slack-webhook`(화면 · 대화에 출력하지 않고 바로 저장). 시험 메시지 「ok」 응답. 무료 플랜 — 비용 없음(기록 90일 · 앱 10개).
