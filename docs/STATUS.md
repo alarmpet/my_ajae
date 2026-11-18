@@ -21,6 +21,7 @@
 - `docs/plans/2026-11-18-agent-team-plan.md`(codex · grok · agy 설계 라운드, 인용 대조). Buzz 는 쓰지 않는다(사용자). 이번 주 진행: 용하네 · 보카라이더 / 대기: 체스 · auto-cf. `D:\ops`(목록 · 아침 한 장 · 교훈 카드) 시작함 — 매일 07:30 슬랙 [고름]. 작업 스케줄러 등록 완료(11-18 · `ops-morning` 매일 07:30 · `my_ajae-posts` 로그인 때). Buzz 도커 · 앱 · 도커 데스크톱 끔.
 - 슬랙 운영 계획 `docs/plans/2026-11-18-slack-solo-team-plan.md`(ego-browser 로 공식 문서 조사): 채널 다섯 · 폰은 `#0-고름` 만 · [고름] 버튼(Socket Mode) · PC 멈춤 감지(예약 메시지). **사용자 몫: 폰 알림 설정 5분(§3) · 1단계 「진행」 여부.** 「올려」 버튼은 보류.
 - AWS Emulator 검토(11-18, 팀 계획 §13): 도구는 보류(다섯 저장소 모두 AWS 안 씀 · my_ajae/auto-cf 의 `boto3` 는 R2). 「세 팀 + 합치기 전 문」 방식은 규칙으로 가져옴. **보카라이더 담당에게 넘길 제안: 수파베이스 마이그레이션 로컬 시험(`supabase start` · `supabase test db`).**
+- 자산 공유 계획 `docs/plans/2026-11-18-cross-project-assets-plan.md`(다섯 저장소 현황 · 여러 벌인 것 · 서로 넘길 것). 방법: 복사 말고 「찾을 수 있게(자산 색인) + 가리키게」. **사용자 몫: 1~3단계 「진행」 여부 · 공용으로 올릴 스킬 · auto-cf 원격(백업) 결정.**
 egister_morning.ps1`).
 
 ## 2026-11-18 새벽 — 슬랙 알림(주 통로) · Buzz(보조)
