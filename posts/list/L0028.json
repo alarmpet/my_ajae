@@ -1,0 +1,18 @@
+{
+ "id": "L0028",
+ "style": "짧은 도발 글(글만) — L0027 형식 반복 시험(2026-11-19 사용자 「짧은 글 형식으로 두세 개 더 만들어 봐」)",
+ "app": "vocarider",
+ "ledger": [
+  "E012"
+ ],
+ "text": "영단어 게임 하려고 에너지 충전 기다리지 마세요.\n제 게임은 기다림도, 돈 주고 사는 뽑기도 없습니다.",
+ "first_comment": "달려 볼 분은 여기 → alarmpet.github.io/vocarider-app/\n가입 없이 바로 달리고, 캐릭터 · 탈것은 모양만 다르고 성능은 같습니다.",
+ "text_only": true,
+ "platforms": [
+  "threads"
+ ],
+ "topic_tag": "영단어",
+ "hook": "H01",
+ "pillar": "앱 알리기",
+ "source_note": "E012 를 보카 main 1f604454:src/trust.js:6 TRUST_POINTS 와 대조(가입 없이 바로 · 기다림·에너지 없음 · 성능 같음 · 사는 뽑기 없음). 같은 파일 5번 줄 「광고·결제 유무는 약속하지 않는다」 — 그래서 「무료 · 결제 없음」은 쓰지 않았다."
+}

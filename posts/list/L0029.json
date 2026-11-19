@@ -1,0 +1,18 @@
+{
+ "id": "L0029",
+ "style": "짧은 도발 글(글만) — L0027 형식 반복 시험(2026-11-19 사용자 「짧은 글 형식으로 두세 개 더 만들어 봐」)",
+ "app": "vocarider",
+ "ledger": [
+  "E013"
+ ],
+ "text": "영단어 하나 틀리면 끝나는 게임, 이제 그만.\n제 게임은 틀려도 하트가 그대로고, 그 단어를 한 번 더 물어봅니다.",
+ "first_comment": "틀려 볼 분은 여기 → alarmpet.github.io/vocarider-app/\n방금 고른 오답에는 ✗ 가 붙어서, 다시 물을 때는 셋 중에서 고릅니다.",
+ "text_only": true,
+ "platforms": [
+  "threads"
+ ],
+ "topic_tag": "영단어",
+ "hook": "H01",
+ "pillar": "앱 알리기",
+ "source_note": "E013 을 보카 main 1f604454:src/race/wrong-recovery.js:1-7 과 대조(오답 직후 하트 차감 없음 · 만회 게이트가 같은 단어를 다시 묻는다 · 방금 고른 오답에 ✗ — 정답은 여전히 셋 중 하나)."
+}
