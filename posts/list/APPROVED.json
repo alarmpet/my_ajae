@@ -155,6 +155,33 @@
    "files": {
     "posts/list/L0027.json": "275471e7544920b9e8f82c6cd3dda1ed86a1497083c381a615d13dd82bed57bb"
    }
+  },
+  {
+   "id": "L0032",
+   "app": "maker",
+   "approved_by": "사용자(채팅 「L0032 · L0034 · L0033 … 이건 승인해」 2026-11-19 — 짧은 글 · 글만 · 스레드만)",
+   "approved_at": "2026-11-19",
+   "files": {
+    "posts/list/L0032.json": "3ad84f786cbb684ee7c842a49d62d1e5a10a3a52065db812c94ac4962651e0a9"
+   }
+  },
+  {
+   "id": "L0034",
+   "app": "yonghane",
+   "approved_by": "사용자(채팅 「L0032 · L0034 · L0033 … 이건 승인해」 2026-11-19 — 짧은 글 · 글만 · 스레드만)",
+   "approved_at": "2026-11-19",
+   "files": {
+    "posts/list/L0034.json": "c776b20f236285bfbf8f0fcfe1c2bb689607fbc5b9e17d445062e38046abaa1d"
+   }
+  },
+  {
+   "id": "L0033",
+   "app": "maker",
+   "approved_by": "사용자(채팅 「L0032 · L0034 · L0033 … 이건 승인해」 2026-11-19 — 짧은 글 · 글만 · 스레드만)",
+   "approved_at": "2026-11-19",
+   "files": {
+    "posts/list/L0033.json": "a19f36601e7e68f049c6402965828f0d384fcb9cb60251b6b5ab834c2dce45f4"
+   }
   }
  ]
 }
