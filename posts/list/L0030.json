@@ -1,19 +1,18 @@
 {
  "id": "L0030",
- "style": "짧은 도발 글(글만) — L0027 형식 반복 시험(2026-11-19 사용자 「짧은 글 형식으로 두세 개 더 만들어 봐」)",
- "app": "yonghane",
+ "style": "짧은 질문 글(글만) — 못난 숫자를 먼저 내놓고 묻는다(2026-11-19 사용자 「그 방향으로 다시 써 줘」)",
+ "app": "maker",
  "ledger": [
-  "E023",
-  "E014"
+  "E045"
  ],
- "text": "사주 앱이 「생년월일은 안 보냅니다」라고 쓰면 믿으세요?\n제 앱은 생년월일을 넣는 동안 바깥으로 요청이 하나라도 나가면 시험이 실패하게 해 놨습니다.",
- "first_comment": "용하네는 여기 있습니다 → www.yonghane.com\n약속 문장마다 그걸 지키는 시험 이름을 붙여 뒀고, 시험을 지우면 약속 표 검사가 실패합니다.",
+ "text": "AI랑 앱 만들고 SNS 시작한 지 일주일. 글 18개 올렸는데 남이 단 댓글 0개.\n다들 첫 댓글 어떻게 받았어요? 진짜 궁금해서 물어봄.",
+ "first_comment": "제일 많이 본 글도 조회 84였어요 😂 달아 주시면 하나도 안 빼고 읽습니다.",
  "text_only": true,
  "platforms": [
   "threads"
  ],
- "topic_tag": "사주앱",
- "hook": "질문형(틀 밖 — 「…믿으세요?」)",
- "pillar": "앱 알리기",
- "source_note": "E023 · E014 를 용하네 main 1e9cc47a:apps/web/lib/promises.ts:1-22 와 대조(birth-stays 약속 · 가드 apps/web/e2e/input-privacy.spec.ts 「no birth data leaves the browser during input or calculation」 · promises.test.ts 가 가드 파일 · 제목을 확인). 「개인정보」 대신 시험이 실제로 보는 「생년월일」로 좁혔다."
+ "topic_tag": "앱개발",
+ "hook": "H07",
+ "pillar": "대화",
+ "source_note": "E045(2026-11-19 공식 API · 작성 계정 대조). H07 「내 것을 먼저 내놓고 묻는다」. 인기 글 대조 — 댓글 2,000개 글은 끝이 「너는 어때?」 순수 질문이었다(보상 조건 없음 — AGENTS §2-5)."
 }
