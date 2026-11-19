@@ -4,8 +4,8 @@ D:/auto-cf/tools/threads_api.py(@petblossom)와 같은 방식. 토큰은 자격 
     python tools/threads_api.py whoami                  # 토큰이 어느 계정 것인지(아이디만)
     python tools/threads_api.py verify P0008            # APPROVED.json 지문과 파일 대조(게시 안 함)
     python tools/threads_api.py r2-test                 # 공개 버킷에 시험 파일 올리고 · 열어 보고 · 지운다(게시 안 함)
-    python tools/threads_api.py publish P0008 --yes     # 승인 지문 · 계정 · 글자 수가 맞을 때만 게시
-    python tools/threads_api.py comment L0001 --yes     # 게시물의 first_comment 를 본글의 첫 답글로(우리 계정)
+    python tools/threads_api.py publish P0008 --yes [--date YYYY-MM-DD]  # 게시 관문(tools/post_gate.py) 통과 때만 — 그날 사용자 확인 필요
+    python tools/threads_api.py comment L0001 --yes [--date YYYY-MM-DD]  # first_comment 를 본글의 첫 답글로(우리 계정 · 같은 관문)
 
 게시물의 미디어(게시물 JSON 기준): video 가 있으면 영상, carousel 이면 캐러셀, image 면 그 그림 한 장, 아니면 카드 한 장(out/cards/W46/<id>.jpg). 게시물은 posts/*/<id>.json 어디든(승인 기록은 같은 폴더).
 미디어는 auto-cf 의 R2 공개 버킷(petblossom-feed) `my_ajae/` 아래에 잠깐 올리고, 게시를 확인하면 지운다(사용자 결정 2026-11-12).
@@ -31,7 +31,12 @@ SECRET = "threads-token"
 EXPECT_USER = "my_ajae"
 MAX_TEXT = 500
 LOG = ROOT / "posts/published.jsonl"
-R2 = json.loads(Path("D:/auto-cf/config/ig_api.json").read_text(encoding="utf-8"))["r2"]
+R2_CONF = Path("D:/auto-cf/config/ig_api.json")
+
+
+def r2_conf():
+    """R2 설정은 미디어를 실제로 올릴 때만 읽는다(--show · 글만 올리는 경로가 auto-cf 파일에 묶이지 않게)."""
+    return json.loads(R2_CONF.read_text(encoding="utf-8"))["r2"]
 
 
 def api(method, path, **params):
@@ -97,12 +102,14 @@ def media_of(post):
 # ---- R2 공개 주소 ----
 def r2():
     import boto3
+    R2 = r2_conf()
     return boto3.client("s3", endpoint_url=R2["s3_endpoint"], region_name="auto",
                         aws_access_key_id=get("r2-access-key-id", prefix="auto-cf/"),
                         aws_secret_access_key=get("r2-secret-access-key", prefix="auto-cf/"))
 
 
 def upload(s3, path, key):
+    R2 = r2_conf()
     ctype = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
     s3.put_object(Bucket=R2["bucket"], Key=key, Body=path.read_bytes(), ContentType=ctype)
     url = f"{R2['public_base_url']}/{key}"
@@ -113,8 +120,25 @@ def upload(s3, path, key):
 
 
 def remove(s3, keys):
+    """공개 버킷 정리 — 실패해도 게시 결과를 덮지 않는다(정리 실패는 따로 출력한다)."""
+    if not keys:
+        return
+    bucket = r2_conf()["bucket"]
     for k in keys:
-        s3.delete_object(Bucket=R2["bucket"], Key=k)
+        try:
+            s3.delete_object(Bucket=bucket, Key=k)
+        except Exception as e:  # noqa: BLE001
+            print(f"R2 정리 실패(게시와 별개 — 수동 정리): {k} {str(e)[:120]}", flush=True)
+
+
+def record(rec):
+    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+
+def already(pid, platform):
+    return LOG.exists() and any(json.loads(l).get("id") == pid and json.loads(l).get("platform") == platform
+                                for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip())
 
 
 # ---- 게시 ----
@@ -145,18 +169,23 @@ def publish_container(uid, cid, text):
                 return new[0]["id"]
 
 
-def publish(pid):
-    post = verify(pid)
+def publish(pid, date=None):
+    import post_gate
+    post = post_gate.gate(pid, date)  # 승인 지문 · 미디어 승인 · 검사 · 사용자 확인 — 외부 호출 전에
+    with post_gate.lock(pid, "threads"):
+        return _publish(pid, post)
+
+
+def _publish(pid, post):
+    if already(pid, "threads"):
+        raise SystemExit(f"{pid} 는 이미 스레드에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
     uid, user = whoami()
     if user != EXPECT_USER:
         raise SystemExit(f"토큰 계정이 {user} — {EXPECT_USER} 가 아니라 게시하지 않음")
-    if LOG.exists() and any(json.loads(l).get("id") == pid and json.loads(l).get("platform") == "threads"
-                            for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()):
-        raise SystemExit(f"{pid} 는 이미 스레드에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
     parts = split_text(post["text"].strip())
     text = parts[0]
     kind, files = ("TEXT", []) if post.get("text_only") else media_of(post)  # 2026-11-17 — 짧은 도발 글은 그림 없이
-    s3 = r2()
+    s3 = r2() if files else None
     stamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     keys, urls = [], []
     try:
@@ -190,16 +219,19 @@ def publish(pid):
         info = api("GET", mid, fields="id,permalink,timestamp,media_type")
     finally:
         remove(s3, keys)  # 게시 성공 · 실패와 상관없이 공개 버킷에서 지운다
+    # 본글이 올라가면 바로 기록한다 — 이어지는 답글이 실패해도 다음 실행이 본글을 두 번 올리지 않게(2026-11-19)
+    rec = {"id": pid, "platform": "threads", "media_type": kind, "post_id": info["id"], "permalink": info.get("permalink"),
+           "parts": len(parts), "at": info.get("timestamp"),
+           "files_sha256": {str(f.relative_to(ROOT)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}}
+    record(rec)
     cont, prev = [], info["id"]
-    for part in parts[1:]:  # 500자를 넘는 글은 이어지는 답글로(원문 그대로, 자르지 않음)
+    for i, part in enumerate(parts[1:], 1):  # 500자를 넘는 글은 이어지는 답글로(원문 그대로, 자르지 않음)
         c = api("POST", f"{uid}/threads", media_type="TEXT", text=part, reply_to_id=prev)["id"]
         wait_ready(c)
         prev = publish_container(uid, c, part)
         cont.append(prev)
-    rec = {"id": pid, "platform": "threads", "media_type": kind, "post_id": info["id"], "permalink": info.get("permalink"),
-           "continued": cont, "at": info.get("timestamp"), "files_sha256": {str(f.relative_to(ROOT)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}}
-    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        record({"id": pid, "platform": "threads-part", "part": i, "of": len(parts) - 1, "post_id": prev, "on": info["id"]})
+    rec["continued"] = cont
     return rec
 
 
@@ -233,9 +265,15 @@ def split_text(text, limit=MAX_TEXT):
     return parts
 
 
-def first_comment(pid):
+def first_comment(pid, date=None):
     """게시물의 first_comment 를 우리 계정의 첫 답글로 단다(「예시:」로 밝힌 문구 — 부계정 · 가짜 질문 아님)."""
-    post = verify(pid)
+    import post_gate
+    post = post_gate.gate(pid, date)
+    with post_gate.lock(pid, "threads-comment"):
+        return _first_comment(pid, post)
+
+
+def _first_comment(pid, post):
     msg = (post.get("first_comment") or "").strip()
     if not msg:
         return None
@@ -253,8 +291,7 @@ def first_comment(pid):
     mid = publish_container(uid, cid, msg)
     info = api("GET", mid, fields="id,permalink,timestamp")
     rec = {"id": pid, "platform": "threads-comment", "post_id": info["id"], "permalink": info.get("permalink"), "at": info.get("timestamp")}
-    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    record(rec)
     return rec
 
 
@@ -268,6 +305,11 @@ def r2_test():
     finally:
         remove(s3, [k])
     print("지움")
+
+
+def date_arg():
+    """직접 명령도 그 날짜의 사용자 확인이 있어야 올린다(기본 오늘 KST)."""
+    return sys.argv[sys.argv.index("--date") + 1] if "--date" in sys.argv else None
 
 
 def main():
@@ -284,11 +326,11 @@ def main():
     elif cmd == "publish":
         if "--yes" not in sys.argv:
             raise SystemExit("실제 게시는 --yes 가 있어야 한다")
-        print(json.dumps(publish(sys.argv[2]), ensure_ascii=False))
+        print(json.dumps(publish(sys.argv[2], date_arg()), ensure_ascii=False))
     elif cmd == "comment":
         if "--yes" not in sys.argv:
             raise SystemExit("실제 답글은 --yes 가 있어야 한다")
-        print(json.dumps(first_comment(sys.argv[2]), ensure_ascii=False))
+        print(json.dumps(first_comment(sys.argv[2], date_arg()), ensure_ascii=False))
     else:
         print(__doc__)
         return 2

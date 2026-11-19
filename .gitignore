@@ -7,3 +7,6 @@ renders/
 *.log
 .reports/
 logs/
+
+# 파이썬 캐시
+__pycache__/

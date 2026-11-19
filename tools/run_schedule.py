@@ -1,6 +1,6 @@
 """승인된 글을 일정대로 스레드 · 인스타에 올린다 (2026-11-12, 시각별 슬롯 · 대기 모드 2026-11-13).
 
-    python tools/run_schedule.py                                   # 오늘(KST) 슬롯 게시(W46 일정)
+    python tools/run_schedule.py                                   # 오늘(KST) 슬롯 게시(기본 일정 posts/list/SCHEDULE.json)
     python tools/run_schedule.py --dry                             # 오늘 슬롯과 지문만 확인(게시 안 함)
     python tools/run_schedule.py --date 2026-11-13 --dry
     python tools/run_schedule.py --sched posts/list/SCHEDULE.json --wait   # 앞으로 올 슬롯마다 그 시각까지 기다렸다가 게시
@@ -16,8 +16,11 @@
 승인(APPROVED.json)과 별도로, 슬롯마다 그날의 확인 기록(같은 폴더 CONFIRMED.jsonl — 날짜 · 지문 · 사용자 말)이 있어야 올린다.
     python tools/run_schedule.py --show L0002                       # 올라갈 그대로 전문 출력(스레드 나눔 · 첫 댓글 · 카드)
     python tools/run_schedule.py --confirm L0002 --date 2026-11-13 --by "사용자 채팅 「올려」"
---wait 는 확인 기록이 없는 슬롯이 LEAD_MIN 분 안으로 다가오면 전문을 출력하고 코드 3 으로 끝난다
-(에이전트가 그 출력을 사용자에게 보여 주고 확인을 받아 기록한 뒤 다시 건다). 확인이 없으면 올리지 않는다.
+--wait 는 확인 기록이 없는 슬롯이 LEAD_MIN 분 안으로 다가오면 「확인 필요」 알림(슬랙)과 전문을 내고 슬롯 시각까지 확인을
+다시 본다. 그때도 없으면 그 슬롯만 보류하고 다음 슬롯을 기다린다(2026-11-19 — 예전에는 코드 3 으로 끝나 이후 슬롯이 모두 빠졌다).
+확인이 없으면 올리지 않는다. 일정 파일은 슬롯마다 새로 읽는다.
+모든 게시 경로(예약 · threads_api / ig_api 직접 명령 · 댓글)는 tools/post_gate.py 의 같은 관문을 지난다 —
+승인 지문 · 미디어 승인 · 지금 시점 게시물 검사 · 그날 확인 기록 · 동시 실행 잠금.
 """
 import datetime
 import json
@@ -54,64 +57,68 @@ def arg(name, default=None):
     return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
 
 
-def approved_files(pid):
-    import threads_api
-    threads_api.verify(pid)  # 지문이 승인과 다르면 여기서 멈춘다
-    rec = json.loads((threads_api.post_dir(pid) / "APPROVED.json").read_text(encoding="utf-8"))
-    return next(x for x in rec["items"] if x["id"] == pid)["files"]
+from post_gate import approved_files, confirmations, confirmed  # noqa: E402,F401 — 확인 규칙은 게시 관문 한 곳에
 
 
-def confirmed(pid, date):
-    """그날 그 글에 대한 사용자 확인이 있고, 확인한 지문이 지금 파일과 같은지."""
-    import threads_api
-    f = threads_api.post_dir(pid) / "CONFIRMED.jsonl"
-    if not f.exists():
-        return False
-    files = approved_files(pid)
-    for line in f.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            r = json.loads(line)
-            if r["id"] == pid and r["date"] == date and r["files"] == files:
-                return True
-    return False
+def show(pid, platforms=None):
+    """올라갈 그대로 출력한다 — 게시 도구와 같은 함수로 만든 글자(스레드 조각 · 인스타 캡션) · 미디어 순서 · 지문."""
+    import hashlib
 
-
-def show(pid):
-    """올라갈 그대로 출력한다 — 스레드는 500자 넘으면 나눠 올리는 조각까지."""
+    import ig_api
+    import post_gate
     import threads_api
     post = threads_api.verify(pid)
-    parts = threads_api.split_text(post["text"])
-    out = [f"===== {pid} ({post.get('app')}) — 승인 지문 일치 ====="]
-    for i, t in enumerate(parts):
-        out.append(f"--- 본글{'' if i == 0 else f' 이어지는 답글 {i}'} ({len(t)}자) ---")
-        out.append(t)
+    plats = post.get("platforms") or platforms or ["threads", "instagram"]
+    out = [f"===== {pid} ({post.get('app')}) — 승인 지문 일치 · 올라갈 곳: {', '.join(plats)} ====="]
+    if "threads" in plats:
+        parts = threads_api.split_text(post["text"].strip())
+        for i, t in enumerate(parts):
+            out.append(f"--- 스레드 본글{'' if i == 0 else f' 이어지는 답글 {i}'} ({len(t)}자) ---")
+            out.append(t)
+        if post.get("topic_tag"):
+            out.append(f"--- 스레드 주제 태그: {post['topic_tag']} (거절되면 태그 없이 올라간다) ---")
+    if "instagram" in plats:
+        cap = ig_api.caption_of(post)
+        out += [f"--- 인스타 캡션({len(cap)}자{', variants.instagram' if (post.get('variants') or {}).get('instagram') else ''}) ---", cap]
     if post.get("first_comment"):
-        out += ["--- 첫 댓글 ---", post["first_comment"]]
-    if post.get("topic_tag"):
-        out.append(f"--- 스레드 주제 태그: {post['topic_tag']} ---")
-    if post.get("hashtags"):
-        out.append("--- 인스타 해시태그(캡션 끝): " + " ".join("#" + h.lstrip("#") for h in post["hashtags"]) + " ---")
-    out += [f"--- 카드: {post.get('image') or post.get('video') or '(없음)'} ---", "=" * 40]
+        out += ["--- 첫 댓글(우리 계정) ---", post["first_comment"]]
+    if post.get("text_only"):
+        out.append("--- 미디어: 없음(글만) ---")
+    else:
+        kind, files = threads_api.media_of(post)
+        out.append(f"--- 미디어: {kind} {len(files)}개(이 순서로) ---")
+        for i, f in enumerate(files, 1):
+            h = hashlib.sha256(f.read_bytes()).hexdigest()[:12] if f.exists() else "파일 없음"
+            out.append(f"  {i}. {f.relative_to(ROOT)}  sha256 {h}")
+        miss = post_gate.media_unapproved(pid, post)
+        if miss:
+            out.append(f"  !! 승인 목록에 없는 미디어: {miss} — 이대로면 게시 관문에서 멈춘다")
+    out.append(f"--- AI 표시(인스타): {'붙임' if post.get('ai_label') else '안 붙임'} ---")
+    bad = post_gate.check_post(pid)
+    out.append("--- 게시물 검사: " + ("FAIL " + " / ".join(bad) if bad else "통과") + " ---")
+    out.append("=" * 40)
     return "\n".join(out)
 
 
 def run_slot(s, pid, dry, date):
     import ig_api
+    import post_gate
     import threads_api
-    if not dry and not confirmed(pid, date):
-        log(f"HOLD {pid} {date} 사용자 확인 기록 없음 — 게시 안 함")
+    try:  # 지문 · 미디어 승인 · 검사 · 확인 — 하나라도 어긋나면 이 슬롯은 보류(외부 호출 없음)
+        post = post_gate.gate(pid, date, need_confirm=not dry)
+    except SystemExit as e:
+        log(f"HOLD {pid} {date} {e}")
         return 1
     tools = {"threads": (threads_api.publish, threads_api.first_comment),
              "instagram": (ig_api.publish, ig_api.first_comment)}
-    post = threads_api.verify(pid)  # 지문이 다르면 여기서 멈춘다
     fails = 0
     for plat in post.get("platforms") or s["platforms"]:  # 게시물이 정하면 그곳에만(2026-11-17 — 짧은 글은 스레드만)
         if dry:
-            log(f"[dry] {pid} {plat} 지문 일치 — 게시 안 함")
+            log(f"[dry] {pid} {plat} 관문 통과 — 게시 안 함")
             continue
         pub, com = tools[plat]
         try:
-            rec = pub(pid)
+            rec = pub(pid, date)
             log(f"OK {pid} {plat} {rec.get('permalink')}")
         except SystemExit as e:
             fails += 1
@@ -123,17 +130,63 @@ def run_slot(s, pid, dry, date):
             continue
         if post.get("first_comment"):
             try:
-                c = com(pid)
+                c = com(pid, date)
                 log(f"OK {pid} {plat}-comment {c.get('permalink') or c.get('post_id')}")
             except (SystemExit, Exception) as e:  # 댓글 실패는 본글 실패로 세지 않는다
                 log(f"FAIL {pid} {plat}-comment {str(e)[-300:]}")
     return fails
 
 
+def future_slots(sched, after):
+    """일정 파일을 새로 읽어 after 보다 뒤의 슬롯을 시각순으로(대기 중에 일정을 고쳐도 다음 슬롯부터 반영)."""
+    s = json.loads(sched.read_text(encoding="utf-8"))
+    todo = []
+    for x in s["slots"]:
+        at = datetime.datetime.strptime(f"{x['date']} {x.get('time') or s['time']}", "%Y-%m-%d %H:%M").replace(tzinfo=KST)
+        if at > after:
+            todo.append((at, x["id"], x["date"]))
+    return s, sorted(todo)
+
+
+def confirm_note(pid, date):
+    c = confirmations(pid, date)
+    return f"(확인 {c[-1]['at'][5:16]})" if c else "(확인 전)"
+
+
+def wait_loop(sched, dry):
+    """앞으로 올 슬롯마다 그 시각까지 기다렸다가 게시한다.
+    확인 기록이 없는 슬롯은 LEAD_MIN 분 전에 「확인 필요」 알림(슬랙)과 전문을 내고, 슬롯 시각까지 확인을 다시 본다.
+    그때도 없으면 그 슬롯만 보류하고 다음 슬롯으로 간다 — 예전처럼 멈추지 않는다(2026-11-19: 작업 스케줄러로 돌면
+    멈춘 뒤 다음 로그인까지 이후 슬롯이 모두 빠졌다)."""
+    s, todo = future_slots(sched, datetime.datetime.now(KST))
+    log(f"대기 시작 {sched.name}: " + ", ".join(f"{a:%m-%d %H:%M} {p}{'' if dry else confirm_note(p, d)}" for a, p, d in todo) if todo else "앞으로 올 슬롯 없음")
+    fails, last = 0, datetime.datetime.now(KST)
+    while todo:
+        at, pid, date = todo[0]
+        if not dry:
+            asked = False
+            while (left := (at - datetime.datetime.now(KST)).total_seconds()) > 0:
+                if not asked and left <= LEAD_MIN * 60 and not confirmed(pid, date):
+                    log(f"확인 필요 {pid} {at:%m-%d %H:%M} — 채팅에서 전문을 보고 「올려」 하면 그 시각에 올린다(없으면 이 슬롯만 보류)")
+                    print(show(pid, s.get("platforms")), flush=True)
+                    asked = True
+                time.sleep(max(1, min(left, 300, left - LEAD_MIN * 60 if left > LEAD_MIN * 60 else 300)))
+        # 올리기 직전에 일정을 다시 읽는다 — 기다리는 동안 이 슬롯을 일정에서 빼면 올리지 않는다(사용자 보류)
+        s, still = future_slots(sched, at - datetime.timedelta(seconds=1))
+        if (at, pid, date) not in still:
+            log(f"HOLD {pid} {at:%m-%d %H:%M} 일정에서 빠짐 — 올리지 않음")
+            s, todo = future_slots(sched, at)
+            continue
+        fails += run_slot(s, pid, dry, date)
+        last = at
+        s, todo = future_slots(sched, last)
+    return 1 if fails else 0
+
+
 def main():
     dry = "--dry" in sys.argv
     if "--show" in sys.argv:
-        print(show(arg("--show")))
+        print(show(arg("--show"), json.loads((ROOT / arg("--sched", "posts/list/SCHEDULE.json")).read_text(encoding="utf-8")).get("platforms")))
         return 0
     if "--confirm" in sys.argv:
         pid, date, by = arg("--confirm"), arg("--date"), arg("--by")
@@ -146,27 +199,11 @@ def main():
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
         log(f"확인 기록 {pid} {date} — {by}")
         return 0
-    sched = ROOT / arg("--sched", "posts/2026-W46/SCHEDULE.json")
+    sched = ROOT / arg("--sched", "posts/list/SCHEDULE.json")
     s = json.loads(sched.read_text(encoding="utf-8"))
     fails = 0
     if "--wait" in sys.argv:
-        now = datetime.datetime.now(KST)
-        todo = []
-        for x in s["slots"]:
-            at = datetime.datetime.strptime(f"{x['date']} {x.get('time') or s['time']}", "%Y-%m-%d %H:%M").replace(tzinfo=KST)
-            if at > now:
-                todo.append((at, x["id"], x["date"]))
-        log(f"대기 시작 {sched.name}: " + ", ".join(f"{a:%m-%d %H:%M} {p}{'' if dry or confirmed(p, d) else '(확인 전)'}" for a, p, d in sorted(todo)) if todo else "앞으로 올 슬롯 없음")
-        for at, pid, date in sorted(todo):
-            if not dry:
-                while (left := (at - datetime.datetime.now(KST)).total_seconds()) > 0:
-                    if not confirmed(pid, date) and left <= LEAD_MIN * 60:
-                        log(f"확인 필요 {pid} {at:%m-%d %H:%M} — 전문을 출력하고 멈춘다")
-                        print(show(pid), flush=True)
-                        return 3
-                    time.sleep(min(left, 300, max(left - LEAD_MIN * 60, 1)) if not confirmed(pid, date) else min(left, 300))
-            fails += run_slot(s, pid, dry, date)
-        return 1 if fails else 0
+        return wait_loop(sched, dry)
     day = arg("--date", f"{datetime.datetime.now(KST):%Y-%m-%d}")
     todo = [x for x in s["slots"] if x["date"] == day]
     if not todo:

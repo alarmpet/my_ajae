@@ -108,6 +108,9 @@ export function checkPost(post, ledger, yonghane = null) {
   const body = [post.text ?? '', post.card ?? '', ...variants, ...tags].join('\n');
   if (!post.text || !String(post.text).trim()) fail.push('본문이 비었다');
   for (const [re, why] of BANNED) if (re.test(body)) fail.push(`금지 표현: ${why}`);
+  // 2026-11-19 — 첫 댓글도 화면에 나가는 글자다. 주소는 그 자리에 두므로(사용자 2026-11-14) 금지 표현만 본다.
+  const fc = String(post.first_comment ?? '');
+  if (fc) for (const [re, why] of BANNED) if (re.test(fc)) fail.push(`금지 표현(첫 댓글): ${why}`);
   if (post.app === 'yonghane' && yonghane) {
     for (const r of yonghane.rules) if (r.re.test(body)) fail.push(`금지 표현(용하네 정책 ${r.id}): ${r.why}`);
     if (yonghane.error) hold.push(`${yonghane.error} — 용하네 금지 문구는 검사하지 못했다`);

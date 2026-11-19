@@ -68,6 +68,13 @@ test('용하네 정책은 용하네 글에만 건다', () => {
   assert.deepEqual(checkPost({ ...base, text: t }, ledger).fail.filter((f) => f.includes('용하네 정책')), []); // 정책을 안 넘기면 예전과 같다
 });
 
+test('첫 댓글의 금지 표현도 막는다 — 주소는 첫 댓글 자리라 막지 않는다', () => {
+  const bad = checkPost({ ...base, text: '낱말 풀이를 붙였습니다', first_comment: '예시: 완전 무료예요' }, ledger);
+  assert.ok(bad.fail.some((f) => f.startsWith('금지 표현(첫 댓글)')));
+  const url = checkPost({ ...base, text: '낱말 풀이를 붙였습니다', first_comment: '예시: yonghane.com 에서 보세요' }, ledger);
+  assert.deepEqual(url.fail, []);
+});
+
 test('용하네 정책을 못 읽으면 통과가 아니라 보류로 낸다', () => {
   const r = checkPost({ ...base, text: '낱말 풀이를 붙였습니다' }, ledger, { rules: [], unknown: [], error: '용하네 정책을 읽지 못했다(시험)' });
   assert.ok(r.hold.some((h) => h.includes('검사하지 못했다')));

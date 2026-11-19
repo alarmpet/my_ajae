@@ -2,7 +2,7 @@
 D:/auto-cf/tools/ig_api_publish.py(@petblossom)와 같은 방식. 토큰은 자격 증명 관리자 `my_ajae/ig-token` 에서만 읽는다.
 
     python tools/ig_api.py whoami              # 토큰이 어느 계정 것인지(아이디 · 계정 종류만)
-    python tools/ig_api.py publish P0008 --yes # 승인 지문 · 계정이 맞을 때만 게시
+    python tools/ig_api.py publish P0008 --yes [--date YYYY-MM-DD]  # 게시 관문(tools/post_gate.py) 통과 때만 — 그날 사용자 확인 필요
 
 캡션은 게시물 JSON 의 variants.instagram, 없으면 text. 영상은 REELS(피드에도 공유).
 AI 표시(AGENTS §2-8): 게시물에 ai_label 이 true 면 is_ai_generated=true 를 함께 보낸다.
@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from secret_store import get  # noqa: E402
-from threads_api import LOG, media_of, r2, remove, upload, verify  # noqa: E402
+from threads_api import LOG, already, date_arg, media_of, r2, record, remove, upload  # noqa: E402
 
 API = "https://graph.instagram.com/v25.0"
 SECRET = "ig-token"
@@ -61,17 +61,28 @@ def wait_ready(cid, tries=120):
     raise SystemExit(f"컨테이너 {cid} 처리 시간 초과")
 
 
-def publish(pid):
-    post = verify(pid)
-    uid, user, kind_acc = whoami()
-    if user != EXPECT_USER:
-        raise SystemExit(f"토큰 계정이 {user} — {EXPECT_USER} 가 아니라 게시하지 않음")
-    if LOG.exists() and any(json.loads(l).get("id") == pid and json.loads(l).get("platform") == "instagram"
-                            for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()):
-        raise SystemExit(f"{pid} 는 이미 인스타에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
+def caption_of(post):
+    """인스타에 실제로 올라갈 캡션 — 예약의 --show 도 이 함수로 보여 준다(미리 보기와 게시가 같은 글자)."""
     cap = ((post.get("variants") or {}).get("instagram") or post["text"]).strip()
     if post.get("hashtags"):  # 2026-11-16 — 인스타는 해시태그가 검색 · 탐색에 걸리는 길. 캡션 끝에 한 줄로.
         cap += "\n\n" + " ".join("#" + h.lstrip("#") for h in post["hashtags"])
+    return cap
+
+
+def publish(pid, date=None):
+    import post_gate
+    post = post_gate.gate(pid, date)  # 승인 지문 · 미디어 승인 · 검사 · 사용자 확인 — 외부 호출 전에
+    with post_gate.lock(pid, "instagram"):
+        return _publish(pid, post)
+
+
+def _publish(pid, post):
+    if already(pid, "instagram"):
+        raise SystemExit(f"{pid} 는 이미 인스타에 올렸다(posts/published.jsonl) — 두 번 올리지 않음")
+    uid, user, kind_acc = whoami()
+    if user != EXPECT_USER:
+        raise SystemExit(f"토큰 계정이 {user} — {EXPECT_USER} 가 아니라 게시하지 않음")
+    cap = caption_of(post)
     if len(cap) > MAX_CAPTION:
         raise SystemExit(f"캡션 {len(cap)}자 > {MAX_CAPTION}")
     extra = {"is_ai_generated": "true"} if post.get("ai_label") else {}
@@ -113,14 +124,19 @@ def publish(pid):
     rec = {"id": pid, "platform": "instagram", "media_type": info.get("media_product_type") or kind, "post_id": info["id"],
            "permalink": info["permalink"], "at": info.get("timestamp"), "ai_label": bool(extra),
            "files_sha256": {str(f.relative_to(ROOT)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files}}
-    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    record(rec)
     return rec
 
 
-def first_comment(pid):
+def first_comment(pid, date=None):
     """게시물의 first_comment 를 우리 계정의 첫 댓글로(「예시:」로 밝힌 문구). 권한(instagram_business_manage_comments)이 없으면 실패한다."""
-    post = verify(pid)
+    import post_gate
+    post = post_gate.gate(pid, date)
+    with post_gate.lock(pid, "instagram-comment"):
+        return _first_comment(pid, post)
+
+
+def _first_comment(pid, post):
     msg = (post.get("first_comment") or "").strip()
     if not msg:
         return None
@@ -130,10 +146,12 @@ def first_comment(pid):
         raise SystemExit(f"{pid} 인스타 본글 기록이 없다")
     if any(r.get("id") == pid and r.get("platform") == "instagram-comment" for r in recs):
         raise SystemExit(f"{pid} 첫 댓글은 이미 달았다")
+    _, user, _ = whoami()  # 2026-11-19 — 댓글도 계정을 확인한다
+    if user != EXPECT_USER:
+        raise SystemExit(f"토큰 계정이 {user} — {EXPECT_USER} 가 아니라 댓글 달지 않음")
     cid = api("POST", f"{main_rec['post_id']}/comments", message=msg)["id"]
     rec = {"id": pid, "platform": "instagram-comment", "post_id": cid, "on": main_rec["post_id"]}
-    with LOG.open("a", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    record(rec)
     return rec
 
 
@@ -145,11 +163,11 @@ def main():
     elif cmd == "publish":
         if "--yes" not in sys.argv:
             raise SystemExit("실제 게시는 --yes 가 있어야 한다")
-        print(json.dumps(publish(sys.argv[2]), ensure_ascii=False))
+        print(json.dumps(publish(sys.argv[2], date_arg()), ensure_ascii=False))
     elif cmd == "comment":
         if "--yes" not in sys.argv:
             raise SystemExit("실제 댓글은 --yes 가 있어야 한다")
-        print(json.dumps(first_comment(sys.argv[2]), ensure_ascii=False))
+        print(json.dumps(first_comment(sys.argv[2], date_arg()), ensure_ascii=False))
     else:
         print(__doc__)
         return 2

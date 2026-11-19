@@ -44,3 +44,4 @@
 |---|---|
 | 게시물 검사 | `node tools/check_post.mjs posts/<파일>.json` |
 | 검사의 시험 | `node --test tools/check_post.test.mjs tools/check_post.sabotage.test.mjs` (Node 22 는 폴더 경로 `tools/` 를 받지 못한다) |
+| 게시 관문의 시험 | `python -X utf8 -m unittest tools/test_post_gate.py` — 모든 게시 경로(예약 · 직접 명령 · 댓글)는 `tools/post_gate.py` 를 지난다(가짜 API · 외부 호출 0) |
